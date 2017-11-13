@@ -6,7 +6,7 @@
 #    By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/27 13:56:26 by nbouchin          #+#    #+#              #
-#    Updated: 2017/11/13 16:15:04 by nbouchin         ###   ########.fr        #
+#    Updated: 2017/11/13 16:24:10 by nbouchin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,11 +28,11 @@ SRCS	= $(addprefix $(SRCDIR), $(SRC))
 OBJS	= $(addprefix $(OBJDIR), $(SRC:.c=.o))
 
 all: $(OBJDIR) $(NAME)
+	@Make -C srcs/libft/ all
 
 INDEX = 0
 
 $(NAME): $(OBJS)
-	@Make -C srcs/libft/ all
 	@$(CC) -shared -o $(NAME) $(SRCS)
 	@ln -s $(NANE) libft_malloc.so
 	@echo "\nCompilation done for libft_malloc.so\n"
