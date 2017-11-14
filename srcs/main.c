@@ -6,41 +6,49 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:31 by nbouchin          #+#    #+#             */
-/*   Updated: 2017/11/14 14:37:53 by nbouchin         ###   ########.fr       */
+/*   Updated: 2017/11/14 16:21:46 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft_malloc.h"
 
-void		*page_reclaim()
+void		*get_page(size_t size)
 {
 	void	*page;
 
-	page = mmap(NULL, N, PROT_WRITE | PROT_READ,
-	MAP_ANON | MAP_PRIVATE, -1, 0);
+	if (size <= TINY)
+		page = mmap(NULL, N, PROT_WRITE | PROT_READ,
+		MAP_ANON | MAP_PRIVATE, -1, 0);
+	else if (size > TINY && size <= SMALL)
+		page = mmap(NULL, M, PROT_WRITE | PROT_READ,
+		MAP_ANON | MAP_PRIVATE, -1, 0);
+	else
+		page = mmap(NULL, size, PROT_WRITE | PROT_READ,
+		MAP_ANON | MAP_PRIVATE, -1, 0);
 	return (page);
 }
 
 t_struct	*init_node(t_struct *node, size_t prev_start, size_t prev_end)
 {
-		node = (t_struct*)mmap(NULL, sizeof(t_struct),
-		PROT_WRITE | PROT_READ, MAP_ANON | MAP_PRIVATE, -1, 0);
-		node->start = prev_start;
-		node->end = prev_end;
-		node->next = NULL;
-		return (node);
+	node = (t_struct*)mmap(NULL, sizeof(t_struct),
+	PROT_WRITE | PROT_READ, MAP_ANON | MAP_PRIVATE, -1, 0);
+	node->start = prev_start;
+	node->end = prev_end;
+	node->next = NULL;
+	return (node);
 }
 void		*malloc(size_t size)
 {
 	static void	*page;
-	size_t	prev_end;
 	t_struct *node;
 
 	page = NULL;
 	node = g_memory;
+	if (size > SMALL)
+		return (get_page(size));
 	if (!g_memory)
 	{
-		page = page_reclaim();
+		page = get_page(size);
 		node = init_node(node, 0, size);
 		g_memory = node;
 	}
@@ -48,8 +56,7 @@ void		*malloc(size_t size)
 	{
 		while (node->next)
 			node = node->next;
-		prev_end = node->end;
-		node = init_node(node->next, prev_end + 1, prev_end + size);
+		node = init_node(node->next, node->end + 1, node->end + size);
 	}
 	page = mmap(page + node->start, size, PROT_WRITE | PROT_READ,
 	MAP_ANON | MAP_PRIVATE, -1, 0);
@@ -64,7 +71,7 @@ int			main()
 	char	*str3;
 
 	i = 0;
-	str = malloc(sizeof(char) * 50);
+	str = malloc(sizeof(char) * 800);
 	while (i < 50)
 	{
 		str[i] = 'A';
@@ -83,7 +90,7 @@ int			main()
 	printf("\n%s : [%p]\n", str2, str2);
 	i = 0;
 	str3 = malloc(sizeof(char) * 800);
-	while (i < 80)
+	while (i < 800)
 	{
 		str3[i] = 'C';
 		i++;
