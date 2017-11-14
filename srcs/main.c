@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:31 by nbouchin          #+#    #+#             */
-/*   Updated: 2017/11/14 16:21:46 by nbouchin         ###   ########.fr       */
+/*   Updated: 2017/11/14 16:32:40 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void		*get_page(size_t size)
 	else if (size > TINY && size <= SMALL)
 		page = mmap(NULL, M, PROT_WRITE | PROT_READ,
 		MAP_ANON | MAP_PRIVATE, -1, 0);
-	else
+	else (size > SMALL)
 		page = mmap(NULL, size, PROT_WRITE | PROT_READ,
 		MAP_ANON | MAP_PRIVATE, -1, 0);
 	return (page);

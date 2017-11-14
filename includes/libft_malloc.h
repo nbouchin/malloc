@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
-/*   Updated: 2017/11/14 11:27:49 by nbouchin         ###   ########.fr       */
+/*   Updated: 2017/11/14 16:33:31 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 **	define malloc size
 */
 
-# define	TINY		16
-# define	SMALL		512
-# define	LARGE		4096
-# define	N			2097152
-# define	M			16777216
+# define	TINY		7936
+# define	SMALL		1040384
+# define	LARGE		1040384
+# define	N			16777216
+# define	M			134217728
 
 typedef struct			s_struct
 {
