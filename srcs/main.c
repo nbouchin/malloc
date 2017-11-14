@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:31 by nbouchin          #+#    #+#             */
-/*   Updated: 2017/11/14 14:13:14 by nbouchin         ###   ########.fr       */
+/*   Updated: 2017/11/14 14:37:53 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,15 @@ void		*page_reclaim()
 	return (page);
 }
 
+t_struct	*init_node(t_struct *node, size_t prev_start, size_t prev_end)
+{
+		node = (t_struct*)mmap(NULL, sizeof(t_struct),
+		PROT_WRITE | PROT_READ, MAP_ANON | MAP_PRIVATE, -1, 0);
+		node->start = prev_start;
+		node->end = prev_end;
+		node->next = NULL;
+		return (node);
+}
 void		*malloc(size_t size)
 {
 	static void	*page;
@@ -32,26 +41,16 @@ void		*malloc(size_t size)
 	if (!g_memory)
 	{
 		page = page_reclaim();
-		g_memory = (t_struct*)mmap(NULL, sizeof(t_struct), PROT_WRITE | PROT_READ,
-		MAP_ANON | MAP_PRIVATE, -1, 0);
-		g_memory->start = 0;
-		g_memory->end = size;
+		node = init_node(node, 0, size);
+		g_memory = node;
 	}
 	else
 	{
 		while (node->next)
 			node = node->next;
 		prev_end = node->end;
-		node->next = (t_struct*)mmap(NULL, sizeof(t_struct), PROT_WRITE | PROT_READ,
-		MAP_ANON | MAP_PRIVATE, -1, 0);
-		node = node->next;
-		node->start = prev_end + 1;
-		node->end = prev_end + size;
-		node->next = NULL;
+		node = init_node(node->next, prev_end + 1, prev_end + size);
 	}
-	node = g_memory;
-	while (node->next)
-		node = node->next;
 	page = mmap(page + node->start, size, PROT_WRITE | PROT_READ,
 	MAP_ANON | MAP_PRIVATE, -1, 0);
 	return (page + node->start);
@@ -66,7 +65,6 @@ int			main()
 
 	i = 0;
 	str = malloc(sizeof(char) * 50);
-	str2 = malloc(sizeof(char) * 20);
 	while (i < 50)
 	{
 		str[i] = 'A';
@@ -84,8 +82,8 @@ int			main()
 	str2[i] = '\0';
 	printf("\n%s : [%p]\n", str2, str2);
 	i = 0;
-	str3 = malloc(sizeof(char) * 20);
-	while (i < 20)
+	str3 = malloc(sizeof(char) * 800);
+	while (i < 80)
 	{
 		str3[i] = 'C';
 		i++;
