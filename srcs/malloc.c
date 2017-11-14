@@ -6,39 +6,52 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2017/11/14 09:27:20 by nbouchin         ###   ########.fr       */
+/*   Updated: 2017/11/14 14:43:40 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft_malloc.h"
 
-void		tiny_malloc(size_t size, void **ptr)
+void		*page_reclaim()
 {
-	(void)size;
-	*ptr = mmap(NULL, N, PROT_WRITE | PROT_READ,
+	void	*page;
+
+	page = mmap(NULL, N, PROT_WRITE | PROT_READ,
 	MAP_ANON | MAP_PRIVATE, -1, 0);
-	g_memory.start = &ptr;
-	g_memory.end = &ptr + size;
-	g_memory - g_memory->next;
+	return (page);
 }
 
-void		small_malloc(size_t size, void **ptr)
+t_struct	*init_node(t_struct *node, size_t prev_start, size_t prev_end)
 {
-	(void)size;
-	*ptr = mmap(NULL, M, (PROT_WRITE | PROT_READ),
-	(MAP_ANON | MAP_PRIVATE), -1, 0);
+		node = (t_struct*)mmap(NULL, sizeof(t_struct),
+		PROT_WRITE | PROT_READ, MAP_ANON | MAP_PRIVATE, -1, 0);
+		node->start = prev_start;
+		node->end = prev_end;
+		node->next = NULL;
+		return (node);
 }
-
 void		*malloc(size_t size)
 {
-	void	*ptr;
+	static void	*page;
+	size_t	prev_end;
+	t_struct *node;
 
-	if (size <= TINY)
-		tiny_malloc(size, &ptr);
-	else if (size > TINY && size <= SMALL)
-		small_malloc(size, &ptr);
+	page = NULL;
+	node = g_memory;
+	if (!g_memory)
+	{
+		page = page_reclaim();
+		node = init_node(node, 0, size);
+		g_memory = node;
+	}
 	else
-		ptr = mmap(NULL, size, (PROT_WRITE | PROT_READ),
-		(MAP_ANON | MAP_PRIVATE), -1, 0);
-	return (ptr);
+	{
+		while (node->next)
+			node = node->next;
+		prev_end = node->end;
+		node = init_node(node->next, prev_end + 1, prev_end + size);
+	}
+	page = mmap(page + node->start, size, PROT_WRITE | PROT_READ,
+	MAP_ANON | MAP_PRIVATE, -1, 0);
+	return (page + node->start);
 }
