@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
-/*   Updated: 2017/11/13 13:50:54 by nbouchin         ###   ########.fr       */
+/*   Updated: 2017/11/14 11:27:49 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,17 @@
 # define	N			2097152
 # define	M			16777216
 
-void	free(void *ptr);
-void	*malloc(size_t size);
-void	*realloc(void *ptr, size_t size);
+typedef struct			s_struct
+{
+	size_t				start;
+	size_t				end;
+	struct s_struct		*next;
+}						t_struct;
+
+t_struct				*g_memory;
+
+void					free(void *ptr);
+void					*malloc(size_t size);
+void					*realloc(void *ptr, size_t size);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2017/11/13 15:31:12 by nbouchin         ###   ########.fr       */
+/*   Updated: 2017/11/14 09:27:20 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,11 @@
 void		tiny_malloc(size_t size, void **ptr)
 {
 	(void)size;
-	*ptr = mmap(NULL, N, (PROT_WRITE | PROT_READ),
-	(MAP_ANON | MAP_PRIVATE), -1, 0);
+	*ptr = mmap(NULL, N, PROT_WRITE | PROT_READ,
+	MAP_ANON | MAP_PRIVATE, -1, 0);
+	g_memory.start = &ptr;
+	g_memory.end = &ptr + size;
+	g_memory - g_memory->next;
 }
 
 void		small_malloc(size_t size, void **ptr)
