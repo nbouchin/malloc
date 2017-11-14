@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:31 by nbouchin          #+#    #+#             */
-/*   Updated: 2017/11/14 16:32:40 by nbouchin         ###   ########.fr       */
+/*   Updated: 2017/11/14 16:39:56 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void		*get_page(size_t size)
 	else if (size > TINY && size <= SMALL)
 		page = mmap(NULL, M, PROT_WRITE | PROT_READ,
 		MAP_ANON | MAP_PRIVATE, -1, 0);
-	else (size > SMALL)
+	else if (size > SMALL)
 		page = mmap(NULL, size, PROT_WRITE | PROT_READ,
 		MAP_ANON | MAP_PRIVATE, -1, 0);
 	return (page);
@@ -67,34 +67,11 @@ int			main()
 {
 	int		i;
 	char	*str;
-	char	*str2;
-	char	*str3;
 
 	i = 0;
-	str = malloc(sizeof(char) * 800);
-	while (i < 50)
+	while (i < 2115)
 	{
-		str[i] = 'A';
+		str = malloc(7936);
 		i++;
 	}
-	str[i] = '\0';
-	printf("\n%s : [%p]\n", str, str);
-	i = 0;
-	str2 = malloc(sizeof(char) * 12);
-	while (i < 12)
-	{
-		str2[i] = 'B';
-		i++;
-	}
-	str2[i] = '\0';
-	printf("\n%s : [%p]\n", str2, str2);
-	i = 0;
-	str3 = malloc(sizeof(char) * 800);
-	while (i < 800)
-	{
-		str3[i] = 'C';
-		i++;
-	}
-	str3[i] = '\0';
-	printf("\n%s : [%p]\n", str3, str3);
 }
