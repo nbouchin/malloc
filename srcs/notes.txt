@@ -1,7 +1,0 @@
-malloc(sizeof(TINY))
-
-si tiny et que page existe pas:
-demander page.
-stocker dans la structure le debut et la fin de l'allocation.
-
-si tiny et que la page existe demmander une page avec un offset de la soustraction d'adresse precedente

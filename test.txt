@@ -1,0 +1,14 @@
+
+
+
+
+
+0x0
+get page size : [4096]
+
+head: 
+
+malloc(tiny)
+malloc(tiny)
+malloc(small)
+malloc(tiny)

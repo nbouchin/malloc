@@ -28,14 +28,14 @@ SRCS	= $(addprefix $(SRCDIR), $(SRC))
 OBJS	= $(addprefix $(OBJDIR), $(SRC:.c=.o))
 
 all: $(OBJDIR) $(NAME)
-	@Make -C srcs/libft/ all
+	@make -C srcs/libft/ all
 
 INDEX = 0
 
 $(NAME): $(OBJS)
-	@$(CC) -shared -o $(NAME) $(SRCS)
+	@$(CC) -shared -fPIC -o $(NAME) $(SRCS)
 	@ln -s $(NAME) libft_malloc.so
-	@echo "\nCompilation done for libft_malloc.so\n"
+	@echo "Compilation done for libft_malloc.so"
 
 $(OBJDIR):
 	@mkdir -p objs objs/srcs

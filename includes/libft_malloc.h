@@ -12,6 +12,7 @@
 
 #ifndef LIBFT_MALLOC_H
 # define LIBFT_MALLOC_H
+# define _GNU_SOURCE
 
 # include <unistd.h>
 # include <pthread.h>
@@ -23,17 +24,40 @@
 **	define malloc size
 */
 
-# define	TINY		7936
-# define	SMALL		1040384
-# define	LARGE		1040384
-# define	N			16777216
-# define	M			134217728
+/*
+**	TINY
+**
+**	Allocation size 		: from 1 byte to 992 bytes;
+**	Allocation resolution 	: 16 bytes;
+**	Region size 			: 2MB
+*/
+
+/*
+**	SMALL
+**
+**	Allocation size 		: from 993 bytes to 127KB;
+**	Allocation resolution 	: 512 bytes;
+**	Region size				: 16MB
+*/
+
+/*
+**	LARGE
+**
+**	Allocation size 		: 127KB or greater;
+**	Allocation resolution 	: 4KB
+**	Region size				: N/A
+*/
+
+# define	TINY		992
+# define	SMALL		127000
+# define	LARGE		127000
+# define	N			2000000
+# define	M			16000000
 
 typedef struct			s_struct
 {
-	size_t				start;
-	size_t				end;
-	struct s_struct		*next;
+	void				*tiny;
+	void				*small;
 }						t_struct;
 
 t_struct				*g_memory;
