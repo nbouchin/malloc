@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc.h                                           :+:      :+:    :+:   */
+/*   libft_malloc.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
-/*   Updated: 2017/11/14 17:09:03 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/14 14:55:07 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,22 @@
 # define	N			2000000
 # define	M			16000000
 
-typedef struct			s_struct
+typedef struct	s_block
 {
-	void				*tiny;
-	void				*small;
-}						t_struct;
+	t_block		*f_next;
+	t_block		*n_next;
+	int			size;
+}				t_block;
 
-t_struct				*g_memory;
+typedef	struct	s_page
+{
+	int			total_pages;
+	t_page		*page_next;			
+	t_block		*free_list;
+	int			page_size;
+}				t_page;
+
+t_page			g_page[3];
 
 void					free(void *ptr);
 void					*malloc(size_t size);
