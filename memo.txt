@@ -1,0 +1,34 @@
+malloc:
+
+Mem allocation:
+[[page_block][mem_block][][][][free_block][][][][][mem_block][][][][free_block][][]]
+[[page_block][mem_block][][free_block][][][][][mem_block][][][][][][free_block][][]]
+[[page_block][mem_block][][][][][][free_block][][][mem_block][][free_block][][][][]]
+
+page_head [ type_struct.
+
+page_type; // Type of the allocation page (TINY, SMALL, LARGE).
+next_page; // Get next page address.
+address; // Current page address.
+size; // The page size, help to know if the page is full.
+]
+
+block [ type_struct.
+next_free; // Next free block address.
+next; // Next block.
+size; // Current block size.
+]
+
+Global:
+
+[[TINY][MEDIUM][LARGE]]
+
+TINY [
+first_free;
+]
+MEDIUM [
+first_free;
+]
+LARGE [
+first_free;
+]
