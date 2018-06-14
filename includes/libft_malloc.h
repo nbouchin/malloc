@@ -71,8 +71,8 @@ typedef	struct	s_page
 
 t_page			g_page[3];
 
-void					free(void *ptr);
-void					*malloc(size_t size);
-void					*realloc(void *ptr, size_t size);
+void			free(void *ptr);
+void			*malloc(size_t size);
+void			*realloc(void *ptr, size_t size);
 
 #endif

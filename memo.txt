@@ -21,8 +21,15 @@ page [
 malloc call (size):
 
 check_size(size): //check the size to begin page init.
-if (no_pages || full_page): //create page depending of the return of check_size and already allocated pages.
-	init_new_page(page_type): 
-init_new_block(page): //memcpy the new block on the new fresh page || on next free block.
-generate_free_list(free_block_addresses): //copy free block adresses.
-return_address():
+	if (no_pages || full_page): //create page depending of the return of check_size and already allocated pages.
+		init_new_page(page_type): 
+	init_new_block(page): //memcpy the new block on the new fresh page || on next free block.
+	generate_free_list(free_block_addresses): //copy free block adresses.
+	return_address():
+
+
+free call (address):
+	get_block(address):	//Go through free-list to get the address block.
+				//Check the block before and after.
+	fragment(cur_block, prev_block): //If block prev or block next is free, join them.
+	update_free_list(): //add the address with an insertion sort into the free_list.

@@ -12,6 +12,39 @@
 
 #include "../includes/libft_malloc.h"
 
+void		*update_free_list(void	**address)
+{
+}
+
+void		*init_new_block(t_page	**page)
+{
+}
+
+void		*init_new_page(int	page_type)
+{
+}
+
+int			check_size(size_t size)
+{
+	if (size <= TINY)
+	{
+
+	}
+	else if (size > TINY && size <= SMALL)
+	{
+
+	}
+	else if (size > SMALL)
+	{
+
+	}
+	
+}
+
 void		*malloc(size_t size)
 {
+	check_size();
+	init_new_page();
+	init_new_block();
+	update_free_list();
 }
