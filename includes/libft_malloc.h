@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/14 15:12:03 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/15 11:34:25 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,16 @@
 typedef struct	s_block
 {
 	size_t		size;
-	t_block		*next;
-	t_block		*next_free;
+	s_block		*nxt;
+	s_block		*nxt_free;
 }				t_block;
 
 typedef	struct	s_page
 {
 	size_t		size;
 	size_t		total_size;
-	t_page		*next;			
+	s_page		*current;
+	s_page		*nxt;			
 	t_block		*free_list;
 }				t_page;
 
