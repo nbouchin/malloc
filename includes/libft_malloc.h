@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/15 17:09:50 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/15 17:34:19 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,20 @@
 
 typedef struct	s_block
 {
-	size_t		size;
+	size_t		sze;
 	s_block		*nxt;
 	s_block		*nxt_free;
 }				t_block;
 
 typedef	struct	s_page
 {
-	size_t		size;
+	size_t		sze;
 	s_page		*nxt;
 }				t_page;
 
 typedef	struct	s_zone
 {
-	size_t		total_size;
+	size_t		total_sze;
 	t_block		*free_list;
 	t_page		*page;
 }				t_zone;
