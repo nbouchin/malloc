@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/15 13:51:28 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/15 17:17:14 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,23 +35,34 @@ void	free_list_itter(t_block *free_list, void (*f)(t_block *elem))
 	}
 }
 
-void		init_page(int size, int	index)
+void		*new_block(size_t size, t_block *nxt, t_block *nxt_free)
 {
-	if (!g_page[index].current)
-		g_page[index].current = mmap(NULL, size, PROT_WRITE | PROT_READ,
-				MAP_ANON | MAP_PRIVATE, -1, 0);
-	else
-		free_list_itter(g_page[index].free_list, *print_size);
+	t_block	*new_block;
+
+	new_block->size = size;
+	new_block->nxt = nxt;
+	new_block->nxt_free = nxt_free;
+	return (new_block);
+}
+
+void		init_zone(size_t index, size_t size)
+{
+	g_zone[index].page = mmap(NULL, size, PROT_WRITE | PROT_READ,
+	MAP_ANON | MAP_PRIVATE, -1, 0);
+	g_zone[index].free_list = ft_memcpy(g_zone[index].free_list, g_zone[index].page, size);
+	g_zone[index].total_size = size;
+	g_zone[index].page->size = size;
+	g_zone[index].page->nxt = NULL;
 }
 
 void		get_alloc_size(int size)
 {
 	if (size <= TINY)
-		init_page(N, 0);
+		init_zone(N, 0);
 	else if (size > TINY && size <= SMALL)
-		init_page(M, 1);
+		init_zone(M, 1);
 	else if (size > SMALL)
-		init_page(size, 2);
+		init_zone(size, 2);
 }
 
 void		*malloc(size_t size)

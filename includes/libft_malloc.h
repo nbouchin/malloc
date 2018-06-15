@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/15 11:34:25 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/15 17:09:50 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,17 @@ typedef struct	s_block
 typedef	struct	s_page
 {
 	size_t		size;
-	size_t		total_size;
-	s_page		*current;
-	s_page		*nxt;			
-	t_block		*free_list;
+	s_page		*nxt;
 }				t_page;
 
-t_page			g_page[3];
+typedef	struct	s_zone
+{
+	size_t		total_size;
+	t_block		*free_list;
+	t_page		*page;
+}				t_zone;
+
+extern t_zone			g_zone[3];
 
 void			free(void *ptr);
 void			*malloc(size_t size);
