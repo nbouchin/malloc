@@ -6,7 +6,7 @@
 #    By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/27 13:56:26 by nbouchin          #+#    #+#              #
-#    Updated: 2017/11/13 16:29:52 by nbouchin         ###   ########.fr        #
+#    Updated: 2018/06/19 15:47:20 by nbouchin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,36 +24,25 @@ SRC		=	free.c		\
 			malloc.c	\
 			realloc.c
 
-SRCS	= $(addprefix $(SRCDIR), $(SRC))
-OBJS	= $(addprefix $(OBJDIR), $(SRC:.c=.o))
+DEPS        = libft_malloc.h
 
-all: $(OBJDIR) $(NAME)
-	@make -C srcs/libft/ all
+%.o: %.c $(DEPS)
+	$(CC) -fPIC -c -o $@ $< $(FLAGS) -I libft/includes
 
-INDEX = 0
+all: $(NAME)
 
-$(NAME): $(OBJS)
-	@$(CC) -shared -fPIC -o $(NAME) $(SRCS)
-	@ln -s $(NAME) libft_malloc.so
-	@echo "Compilation done for libft_malloc.so"
-
-$(OBJDIR):
-	@mkdir -p objs objs/srcs
-
-$(OBJDIR)%.o: $(SRCDIR)%.c $(HEADER)libft_malloc.h
-	@$(CC) -o $@ -c $< $(FLAGS) -I $(HEADER)
-	$(eval INDEX=$(shell printf "%d" $$(($(INDEX)+1))))
-	@printf "[%02d/03] Compiling (C) %s...\n" $(INDEX) $@
+$(NAME): $(SOURCES:.c=.o)
+	make -C srcs/libft/
+	$(CC) -fPIC -shared -o $(NAME) $(SOURCES:.c=.o) -L srcs/libft -lft
+	ln -F -f -s $(NAME) libft_malloc.so
 
 clean:
-	@rm -rf objs
-	@echo "Cleaning objects..."
-	@make -C srcs/libft/ clean
+	rm -rf objs
+	make -C srcs/libft/ clean
 
 fclean: clean
-	@rm -f libft_malloc.so $(NAME)
-	@echo "Cleaning binaries..."
-	@make -C srcs/libft/ fclean
+	rm -f libft_malloc.so $(NAME)
+	make -C srcs/libft/ fclean
 
 re: fclean all
 
