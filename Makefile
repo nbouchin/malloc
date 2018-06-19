@@ -6,7 +6,7 @@
 #    By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/27 13:56:26 by nbouchin          #+#    #+#              #
-#    Updated: 2018/06/19 15:47:20 by nbouchin         ###   ########.fr        #
+#    Updated: 2018/06/19 17:12:48 by nbouchin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,17 +24,23 @@ SRC		=	free.c		\
 			malloc.c	\
 			realloc.c
 
-DEPS        = libft_malloc.h
+SRCS	= $(addprefix $(SRCDIR), $(SRC))
+OBJS	= $(addprefix $(OBJDIR), $(SRC:.c=.o))
 
-%.o: %.c $(DEPS)
-	$(CC) -fPIC -c -o $@ $< $(FLAGS) -I libft/includes
 
-all: $(NAME)
+$(OBJDIR)%.o: $(SRCDIR)%.c $(HEADER)libft_malloc.h
+	$(CC) -o $@ -c $< $(FLAGS) -I $(HEADER)
 
-$(NAME): $(SOURCES:.c=.o)
-	make -C srcs/libft/
-	$(CC) -fPIC -shared -o $(NAME) $(SOURCES:.c=.o) -L srcs/libft -lft
-	ln -F -f -s $(NAME) libft_malloc.so
+all: $(OBJDIR) $(NAME)
+
+$(NAME): $(OBJS)
+	make -C srcs/libft/ all
+	$(CC) -shared -fPIC -o $(NAME) $(SRCS) -L srcs/libft -lft 
+	ln -s $(NAME) libft_malloc.so
+
+$(OBJDIR):
+	mkdir -p objs objs/srcs
+
 
 clean:
 	rm -rf objs

@@ -6,11 +6,15 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/19 15:17:43 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/19 17:03:46 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft_malloc.h"
+
+t_zone g_zone[3] = {{0, NULL, NULL},
+	{0, NULL, NULL},
+	{0, NULL, NULL}};
 
 t_block	new_block(size_t sze, t_block *nxt, t_block *nxt_free)
 {
@@ -74,6 +78,7 @@ void	check_zone(int sze)
 
 void	*malloc(size_t sze)
 {
+	ft_putstr("Hello");
 	check_zone(sze);
 	return (NULL);
 }
