@@ -6,7 +6,7 @@
 #    By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/27 13:56:26 by nbouchin          #+#    #+#              #
-#    Updated: 2018/06/19 17:12:48 by nbouchin         ###   ########.fr        #
+#    Updated: 2018/06/19 17:14:37 by nbouchin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,9 +20,9 @@ HEADER  = 	includes/
 FLAGS   = 	-Wall -Wextra -Werror
 SRCDIR  = 	srcs/
 OBJDIR  = 	objs/
-SRC		=	free.c		\
-			malloc.c	\
-			realloc.c
+SRC	=	free.c		\
+		malloc.c	\
+		realloc.c
 
 SRCS	= $(addprefix $(SRCDIR), $(SRC))
 OBJS	= $(addprefix $(OBJDIR), $(SRC:.c=.o))
