@@ -6,7 +6,7 @@
 #    By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/27 13:56:26 by nbouchin          #+#    #+#              #
-#    Updated: 2018/06/20 12:55:28 by nbouchin         ###   ########.fr        #
+#    Updated: 2018/06/20 17:16:30 by nbouchin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ endif
 NAME    = 	libft_malloc_$(HOSTTYPE).so
 CC      = 	clang
 HEADER  = 	includes/
-FLAGS   = 	-Wall -Wextra -Werror
+FLAGS   = 	-Wall -Wextra -Werror -g
 SRCDIR  = 	srcs/
 OBJDIR  = 	objs/
 SRC	=	ft_free.c		\
@@ -45,8 +45,9 @@ clean:
 	rm -rf objs
 	make -C srcs/libft/ clean
 
-compile: 
+run: 
 	gcc -o test1 tests/test1.c ./objs/*.o -I ./includes -L ./srcs/libft -lft
+	./test1
 
 fclean: clean
 	rm -f libft_malloc.so $(NAME)
