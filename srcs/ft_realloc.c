@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   realloc.c                                          :+:      :+:    :+:   */
+/*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:14:12 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/19 16:56:18 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/20 10:51:55 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft_malloc.h"
 
-void		*realloc(void *ptr, size_t size)
+void		*ft_realloc(void *ptr, size_t size)
 {
 	(void)ptr;
 	(void)size;

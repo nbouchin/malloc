@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/19 16:56:34 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/20 10:56:18 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,30 +54,29 @@
 # define	N			2000000
 # define	M			16000000
 
-typedef struct	s_block
+typedef struct		s_block
 {
-	size_t		sze;
-	struct s_block		*nxt;
-	struct s_block		*nxt_free;
-}				t_block;
+	char			is_free;
+	size_t			size;
+	struct s_block	*nxt;
+}					t_block;
 
-typedef	struct	s_page
+typedef	struct		s_page
 {
-	size_t		sze;
-	struct s_page		*nxt;
-}				t_page;
+	size_t			size;
+	struct s_page	*nxt;
+}					t_page;
 
-typedef	struct	s_zone
+typedef	struct		s_zone
 {
-	size_t		total_sze;
-	t_block		*free_list;
-	t_page		*page;
-}				t_zone;
+	size_t			total_size;
+	t_page			*page;
+}					t_zone;
 
-extern t_zone			g_zone[3];
+extern t_zone		g_zone[3];
 
-void			free(void *ptr);
-void			*malloc(size_t size);
-void			*realloc(void *ptr, size_t size);
+void				ft_free(void *ptr);
+void				*ft_malloc(size_t size);
+//void				*ft_realloc(void *ptr, size_t size);
 
 #endif
