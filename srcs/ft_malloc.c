@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/20 17:16:57 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/20 17:59:32 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,32 +38,14 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 	return (p + 1);
 }
 
-void	*tiny_zone(int alloc_size)
-{
-	ft_putstr("tiny\n");// debug
-	return(new_zone(0, alloc_size, N));
-}
-
-void	*small_zone(int alloc_size)
-{
-	ft_putstr("small\n");// debug
-	return (new_zone(1, alloc_size, M));
-}
-
-void	*large_zone(int alloc_size)
-{
-	ft_putstr("big\n");// debug
-	return(new_zone(2, alloc_size, alloc_size));
-}
-
 void	*check_zone(int alloc_size)
 {
 	if (alloc_size >= 1 && alloc_size <= TINY)
-		return (tiny_zone(alloc_size));
+		return (new_zone(0, alloc_size, N));
 	else if (alloc_size >= TINY + 1 && alloc_size <= SMALL)
-		return (small_zone(alloc_size));
+		return (new_zone(1, alloc_size, M));
 	else if (alloc_size >= LARGE)
-		return (large_zone(alloc_size));
+		return (new_zone(2, alloc_size, alloc_size));
 	return(0);
 }
 
