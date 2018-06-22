@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/22 16:28:47 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/22 16:58:53 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 	t_block		*p;
 	t_page		*page;
 
+	ft_putstr("alloc_size:");
+	ft_putnbr(alloc_size);
+	ft_putstr("\n");
+	ft_putstr("zone_size:");
+	ft_putnbr(zone_size);
+	ft_putstr("\n");
 	if (!g_zone[index].total_size)
 	{
 		g_zone[index].page = mmap(NULL, zone_size, PROT_WRITE | PROT_READ,
@@ -38,7 +44,7 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 	while (p->nxt)
 		p = p->nxt;
 	ft_putstr(".");
-	if ((char*)(p + 1) + alloc_size > (char*)(page + 1) + zone_size)
+	if ((char*)(p + 1) + alloc_size >= (char*)(page + 1) + zone_size)
 	{
 		ft_putstr("[newpage]\n");
 		page->nxt = mmap(NULL, zone_size, PROT_WRITE | PROT_READ,
@@ -62,10 +68,10 @@ void	*check_zone(size_t alloc_size)
 {
 	if (alloc_size >= 1 && alloc_size <= TINY)
 		return (new_zone(0, get_offset(alloc_size, 16), N));
-	else if (alloc_size >= TINY + 1 && alloc_size <= SMALL)
+	else if (alloc_size >= TINY + 1 && alloc_size < SMALL)
 		return (new_zone(1, get_offset(alloc_size, 512), M));
 	else if (alloc_size >= LARGE)
-		return (new_zone(2, alloc_size, alloc_size));
+		return (new_zone(2, alloc_size, alloc_size + 16));
 	return(0);
 }
 
