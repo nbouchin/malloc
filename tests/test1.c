@@ -6,9 +6,9 @@ int      main()
    char  *addr;
 
    i = 0;
-   while (i < 10)
+   while (i < 15000)
    {
-      addr = (char*)ft_malloc(993);
+      addr = (char*)ft_malloc(512);
       addr[0] = 42;
       i++;
    }
