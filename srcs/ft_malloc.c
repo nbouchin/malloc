@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/22 16:27:14 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/22 16:28:47 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 	p = (t_block *)(page + 1);
 	while (p->nxt)
 		p = p->nxt;
+	ft_putstr(".");
 	if ((char*)(p + 1) + alloc_size > (char*)(page + 1) + zone_size)
 	{
-		ft_putstr("\n");
+		ft_putstr("[newpage]\n");
 		page->nxt = mmap(NULL, zone_size, PROT_WRITE | PROT_READ,
 				MAP_ANON | MAP_PRIVATE, -1, 0);
 		g_zone[index].total_size += zone_size;
