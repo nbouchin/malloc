@@ -8,7 +8,7 @@ int      main()
    i = 0;
    while (i < 15000)
    {
-      addr = (char*)ft_malloc(512);
+      addr = (char*)ft_malloc(510);
       addr[0] = 42;
       i++;
    }

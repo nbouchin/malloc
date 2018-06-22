@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/22 15:01:13 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/22 16:27:14 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_zone g_zone[3] = {{0, NULL},
 void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 {
 	t_block		*p;
+	t_page		*page;
 
 	if (!g_zone[index].total_size)
 	{
@@ -28,23 +29,23 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 		ft_bzero(g_zone[index].page, sizeof(t_page));
 		g_zone[index].total_size = zone_size;
 		g_zone[index].page->size = zone_size;
+		g_zone[index].page->nxt = NULL;
 	}
-	while (g_zone[index].page->nxt)
-	{
-		ft_putstr("SALUT");
-		g_zone[index].page = g_zone[index].page->nxt;
-	}
-	p = (t_block *)(g_zone[index].page + 1);
+	page = g_zone[index].page;
+	while (page->nxt)
+		page = page->nxt;
+	p = (t_block *)(page + 1);
 	while (p->nxt)
 		p = p->nxt;
-	if ((char*)(p + 1) + alloc_size > (char*)(g_zone[index].page + 1) + zone_size)
+	if ((char*)(p + 1) + alloc_size > (char*)(page + 1) + zone_size)
 	{
-		g_zone[index].page->nxt = mmap(NULL, zone_size, PROT_WRITE | PROT_READ,
+		ft_putstr("\n");
+		page->nxt = mmap(NULL, zone_size, PROT_WRITE | PROT_READ,
 				MAP_ANON | MAP_PRIVATE, -1, 0);
-		ft_bzero(g_zone[index].page->nxt, sizeof(t_page));
 		g_zone[index].total_size += zone_size;
-		g_zone[index].page->nxt->size = zone_size;
-		p = (t_block *)(g_zone[index].page->nxt + 1);
+		page->nxt->size = zone_size;
+		page->nxt->nxt = NULL;
+		p = (t_block *)(page->nxt + 1);
 	}
 	p->size = alloc_size;
 	p->nxt = (t_block *)((char *)(p + 1) + alloc_size);
