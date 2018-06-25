@@ -26,6 +26,8 @@ int main()
 		ft_free(addr2);
 		ft_free(addr4);
 		ft_free(addr3);
+		ft_free(addr1);
+		ft_free(addr);
 		i++;
 //}
 	return (0);

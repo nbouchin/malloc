@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/25 14:09:24 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/25 16:16:50 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 				MAP_ANON | MAP_PRIVATE, -1, 0);
 		ft_bzero(g_zone[index].page, sizeof(t_page));
 		g_zone[index].total_size = zone_size;
-		g_zone[index].page->size = zone_size;
+		g_zone[index].page->size = zone_size - sizeof(t_page *);
 		g_zone[index].page->nxt = NULL;
 	}
 	page = g_zone[index].page;
@@ -56,7 +56,12 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 	}
 	p->is_free = 0;
 	p->size = alloc_size;
-	p->nxt = (t_block *)((char *)(p + 1) + alloc_size);
+	if (!p->nxt)
+	{
+		p->nxt = (t_block *)((char *)(p + 1) + alloc_size);
+		p->nxt->size = (char *)page + page->size - (char *)p->nxt;
+		p->nxt->is_free = 1;
+	}
 	return (p + 1);
 }
 

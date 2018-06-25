@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:13:59 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/25 15:29:43 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/25 17:18:21 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,30 @@ int		defrag(t_block **p, void *ptr)
 		if ((char *)(t_block *)((*p) + 1) == (char *)ptr)
 		{
 			free = (t_block *)ptr - 1;
-			if (prev && prev->is_free)
-			{
-				prev->size += (*p)->size + 16;
-				prev->nxt = (*p)->nxt;
-				(*p) = prev;
-			}
 			if ((*p)->nxt->is_free)
 			{
-				free->size += (*p)->nxt->size + 16;
-				free->nxt = (*p)->nxt->nxt;
+				(*p)->size += (*p)->nxt->size + 16;
+				(*p)->nxt = (*p)->nxt->nxt;
+				(*p)->is_free = 1;
 			}
-			free->is_free = 1;
+		//	if ((prev && prev->is_free) && (*p)->nxt->is_free)
+		//	{
+		//		prev->size += (*p)->size + (*p)->nxt->size + 32;
+		//		prev->nxt = (*p)->nxt->nxt;
+		//		(*p) = prev;
+		//		(*p)->is_free = 1;
+		//	}
+		//	if ((*p)->nxt->is_free)
+		//	{
+		//		(*p)->size += (*p)->nxt->size + 16;
+		//		(*p)->nxt = (*p)->nxt->nxt;
+		//		(*p)->is_free = 1;
+		//	}
+		//	else
+		//		(*p)->is_free = 1;
+			ft_putstr("block size: ");
+			ft_putnbr((*p)->size);
+			ft_putendl("");
 			return (1);
 		}
 		prev = (*p);
@@ -57,6 +69,7 @@ void		ft_free(void *ptr)
 		page = g_zone[i].page;
 		while (page)
 		{
+			dprintf( 2, "%p", page);
 			if ((char*)ptr >= (char*)page &&
 					(char*)ptr <= (char*)(page) + (i == 0) ? N : M)
 			{
