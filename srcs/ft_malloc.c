@@ -6,28 +6,30 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/22 16:58:53 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/25 14:09:24 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft_malloc.h"
-#include <stdio.h>
 
 t_zone g_zone[3] = {{0, NULL},
 	{0, NULL},
 	{0, NULL}};
+
+int		no_place(t_block *p, size_t alloc_size)
+{
+	if (p->size >= alloc_size && p->is_free)
+		return (0);
+	return (1);
+}
 
 void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 {
 	t_block		*p;
 	t_page		*page;
 
-	ft_putstr("alloc_size:");
-	ft_putnbr(alloc_size);
-	ft_putstr("\n");
-	ft_putstr("zone_size:");
-	ft_putnbr(zone_size);
-	ft_putstr("\n");
+	p = NULL;
+	page = NULL;
 	if (!g_zone[index].total_size)
 	{
 		g_zone[index].page = mmap(NULL, zone_size, PROT_WRITE | PROT_READ,
@@ -41,12 +43,10 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 	while (page->nxt)
 		page = page->nxt;
 	p = (t_block *)(page + 1);
-	while (p->nxt)
+	while (p->nxt && no_place(p, alloc_size))
 		p = p->nxt;
-	ft_putstr(".");
 	if ((char*)(p + 1) + alloc_size >= (char*)(page + 1) + zone_size)
 	{
-		ft_putstr("[newpage]\n");
 		page->nxt = mmap(NULL, zone_size, PROT_WRITE | PROT_READ,
 				MAP_ANON | MAP_PRIVATE, -1, 0);
 		g_zone[index].total_size += zone_size;
@@ -54,6 +54,7 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 		page->nxt->nxt = NULL;
 		p = (t_block *)(page->nxt + 1);
 	}
+	p->is_free = 0;
 	p->size = alloc_size;
 	p->nxt = (t_block *)((char *)(p + 1) + alloc_size);
 	return (p + 1);
