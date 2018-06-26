@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/26 16:43:11 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/26 16:51:46 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 	first_call(index, zone_size);
 	page = g_zone[index].page;
 	if (alloc_size >= LARGE)
-		page = page->last;	
+		page = page->last;
 	while (page->nxt)
 		page = page->nxt;
 	p = (t_block *)(page + 1);
