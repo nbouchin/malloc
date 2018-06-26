@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:13:59 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/26 16:28:33 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/26 16:32:55 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void		delete_page(t_block *p, t_page **page, t_page **prev, int i)
 {
 	if ((p->size == (*page)->size - sizeof(t_block)) && (*page) != g_zone[i].page)
 	{
+		ft_putendl("!");
 		if ((*prev))
 			(*prev)->nxt = NULL;
 		if ((*prev) && (*page)->nxt)

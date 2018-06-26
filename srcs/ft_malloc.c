@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/26 16:20:09 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/26 16:43:11 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,14 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 	page = NULL;
 	first_call(index, zone_size);
 	page = g_zone[index].page;
-	if (zone_size >= LARGE)
+	if (alloc_size >= LARGE)
 		page = page->last;	
 	while (page->nxt)
 		page = page->nxt;
 	p = (t_block *)(page + 1);
 	while (p->nxt && no_place(p, alloc_size))
 		p = p->nxt;
-	if ((char *)(p + 1) + alloc_size >= (char *)(page + 1) + zone_size)
+	if ((char *)(p + 1) + alloc_size <= (char *)(page + 1) + zone_size)
 	{
 		page->nxt = mmap(NULL, zone_size, PROT_WRITE | PROT_READ,
 				MAP_ANON | MAP_PRIVATE, -1, 0);
@@ -76,7 +76,8 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 	}
 	p->is_free = 0;
 	p->size = alloc_size;
-	create_free_node(p, page, alloc_size);
+	if (!(alloc_size >= LARGE))
+		create_free_node(p, page, alloc_size);
 	return (p + 1);
 }
 
