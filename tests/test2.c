@@ -11,8 +11,8 @@ int main()
 	char *addr4;
 
 	i = 0;
-	while (i < 500)
-	{
+while (i < 2000)
+{
 		addr = (char*)ft_malloc(127500);
 		addr[0] = 42;
 		addr1 = (char*)ft_malloc(127500);
@@ -29,6 +29,6 @@ int main()
 		ft_free(addr1);
 		ft_free(addr);
 		i++;
-	}
+}
 	return (0);
 } 

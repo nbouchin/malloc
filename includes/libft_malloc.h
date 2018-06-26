@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/20 17:04:57 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/26 16:02:58 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef	struct		s_page
 {
 	size_t			size;
 	struct s_page	*nxt;
+	struct s_page	*last;
 }					t_page;
 
 typedef	struct		s_zone
