@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/26 13:52:13 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/26 15:09:51 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	*check_zone(size_t alloc_size)
 	else if (alloc_size >= TINY + 1 && alloc_size < SMALL)
 		return (new_zone(1, get_offset(alloc_size, 512), M));
 	else if (alloc_size >= LARGE)
-		return (new_zone(2, alloc_size, alloc_size + sizeof(t_block)));
+		return (new_zone(2, alloc_size, alloc_size + sizeof(t_block) + sizeof(t_page)));
 	return (0);
 }
 

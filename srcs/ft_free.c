@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:13:59 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/26 14:04:26 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/26 15:29:16 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	defrag(t_block **p, void *ptr)
 	t_block		*prev;
 
 	prev = NULL;
-	while ((*p))
+	while ((*p)->nxt)
 	{
 		if ((t_block *)((*p) + 1) == (t_block *)ptr)
 		{
@@ -44,13 +44,14 @@ void	defrag(t_block **p, void *ptr)
 
 void		delete_page(t_block *p, t_page **page, t_page **prev, int i)
 {
-	if ((p->size == (*page)->size - sizeof(t_block))
-			&& (*page) != g_zone[i].page)
+	if ((p->size == (*page)->size - sizeof(t_block)) && (*page) != g_zone[i].page)
 	{
 		if ((*prev))
 			(*prev)->nxt = NULL;
 		if ((*prev) && (*page)->nxt)
+		{
 			(*prev)->nxt = (*page)->nxt;
+		}
 		munmap((*page), (*page)->size + sizeof(t_page));
 	}
 }
@@ -65,11 +66,12 @@ void		large_free(void *ptr)
 	i = -1;
 	p = NULL;
 	page = g_zone[2].page;
-	while (page)
+	p = (((t_block *)(page + 1)) + 1);
+	while (page->nxt)
 	{
-		if (((t_block*)(page + 1) + 1) == ptr)
+		if (((t_block *)(page + 1) + 1) == ptr)
 		{
-			p = (t_block *)(page + 1);
+			p = (((t_block *)(page + 1) + 1));
 			delete_page(p, &page, &prev, 2);
 		}
 		prev = page;
