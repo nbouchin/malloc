@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:13:59 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/27 14:11:44 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/27 16:49:18 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,14 @@ void		large_free(void *ptr)
 	p = NULL;
 	page = g_zone[2].page;
 	p = (((t_block *)(page + 1)) + 1);
-	while (page)
+	while (page->nxt)
 	{
 		if (((t_block *)(page + 1) + 1) == ptr)
 		{
-			p = (((t_block *)(page + 1) + 1));
+			ft_putendl("SALUT");
+			p = (t_block *)(page + 1);
 			delete_page(p, &page, &prev, 2);
+			break ;
 		}
 		prev = page;
 		page = page->nxt;
