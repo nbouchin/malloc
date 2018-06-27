@@ -122,12 +122,16 @@ int main()
 	{
 		addr = (char*)ft_malloc(127450);
 		addr[0] = 42;
+
 		addr1 = (char*)ft_malloc(127450);
 		addr1[0] = 42;
+		
 		addr2 = (char*)ft_malloc(127450);
 		addr2[0] = 42;
+
 		addr3 = (char*)ft_malloc(127450);
 		addr3[0] = 42;
+
 		addr4 = (char*)ft_malloc(127450);
 		addr4[0] = 42;
 		ft_free(addr);
