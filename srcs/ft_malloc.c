@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/27 14:19:55 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/27 15:10:05 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,10 @@ void	first_call(int index, size_t zone_size)
 
 void	create_free_node(t_block *p, t_page *page, size_t alloc_size)
 {
-	(void)page;
 	if (!p->nxt)
 	{
 		p->nxt = (t_block *)((char *)(p + 1) + alloc_size);
-		p->nxt->size = ((char*)page + page->size) - (char *)(page->nxt + 1);
+		p->nxt->size = ((char*)page + page->size) - (char *)(p->nxt + 1);
 		p->nxt->is_free = 1;
 	}
 }

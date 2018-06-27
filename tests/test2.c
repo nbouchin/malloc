@@ -8,54 +8,37 @@ int main()
 	char *addr2;
 	char *addr3;
 	char *addr4;
+	int	i;
 
-	addr = (char*)ft_malloc(10);
-	addr[0] = 42;
-	addr1 = (char*)ft_malloc(10);
-	addr1[0] = 42;
-	addr2 = (char*)ft_malloc(10);
-	addr2[0] = 42;
-	addr3 = (char*)ft_malloc(10);
-	addr3[0] = 42;
-	addr4 = (char*)ft_malloc(10);
-	addr4[0] = 42;
+	i = 0;
 
-
-	addr = (char*)ft_malloc(1024);
-	addr[0] = 42;
-	addr1 = (char*)ft_malloc(1024);
-	addr1[0] = 42;
-	addr2 = (char*)ft_malloc(1024);
-	addr2[0] = 42;
-	addr3 = (char*)ft_malloc(1024);
-	addr3[0] = 42;
-	addr4 = (char*)ft_malloc(1024);
-	addr4[0] = 42;
-
-
-	addr = (char*)ft_malloc(127000);
-	addr[0] = 42;
-	addr1 = (char*)ft_malloc(127000);
-	addr1[0] = 42;
-	addr2 = (char*)ft_malloc(127000);
-	addr2[0] = 42;
-	addr3 = (char*)ft_malloc(127000);
-	addr3[0] = 42;
-	addr4 = (char*)ft_malloc(127000);
-	addr4[0] = 42;
+	while (i < 1024)
+	{
+		addr = (char*)ft_malloc(450);
+		addr[0] = 42;
+		addr1 = (char*)ft_malloc(450);
+		addr1[0] = 42;
+		addr2 = (char*)ft_malloc(450);
+		addr2[0] = 42;
+		addr3 = (char*)ft_malloc(450);
+		addr3[0] = 42;
+		addr4 = (char*)ft_malloc(450);
+		addr4[0] = 42;
+		i++;
+	}
 	//	ft_putendl("TINY MALLOC TEST");
 	//	i = 0;
 	//	while (i < 2000)
 	//	{
-	//		addr = (char*)ft_malloc(10);
+	//		addr = (char*)ft_malloc(450);
 	//		addr[0] = 42;
-	//		addr1 = (char*)ft_malloc(10);
+	//		addr1 = (char*)ft_malloc(450);
 	//		addr1[0] = 42;
-	//		addr2 = (char*)ft_malloc(10);
+	//		addr2 = (char*)ft_malloc(450);
 	//		addr2[0] = 42;
-	//		addr3 = (char*)ft_malloc(10);
+	//		addr3 = (char*)ft_malloc(450);
 	//		addr3[0] = 42;
-	//		addr4 = (char*)ft_malloc(10);
+	//		addr4 = (char*)ft_malloc(450);
 	//		addr4[0] = 42;
 	////		ft_free(addr2);
 	////		ft_free(addr4);
@@ -90,15 +73,15 @@ int main()
 	//	i = 0;
 	//	while (i < 2000)
 	//	{
-	//		addr = (char*)ft_malloc(12710);
+	//		addr = (char*)ft_malloc(127450);
 	//		addr[0] = 42;
-	//		addr1 = (char*)ft_malloc(12710);
+	//		addr1 = (char*)ft_malloc(127450);
 	//		addr1[0] = 42;
-	//		addr2 = (char*)ft_malloc(12710);
+	//		addr2 = (char*)ft_malloc(127450);
 	//		addr2[0] = 42;
-	//		addr3 = (char*)ft_malloc(12710);
+	//		addr3 = (char*)ft_malloc(127450);
 	//		addr3[0] = 42;
-	//		addr4 = (char*)ft_malloc(12710);
+	//		addr4 = (char*)ft_malloc(127450);
 	//		addr4[0] = 42;
 	////		ft_free(addr2);
 	////		ft_free(addr4);
@@ -111,15 +94,15 @@ int main()
 	//	i = 0;
 	//	while (i < 2000)
 	//	{
-	//		addr = (char*)ft_malloc(10);
+	//		addr = (char*)ft_malloc(450);
 	//		addr[0] = 42;
-	//		addr1 = (char*)ft_malloc(10);
+	//		addr1 = (char*)ft_malloc(450);
 	//		addr1[0] = 42;
-	//		addr2 = (char*)ft_malloc(10);
+	//		addr2 = (char*)ft_malloc(450);
 	//		addr2[0] = 42;
-	//		addr3 = (char*)ft_malloc(10);
+	//		addr3 = (char*)ft_malloc(450);
 	//		addr3[0] = 42;
-	//		addr4 = (char*)ft_malloc(10);
+	//		addr4 = (char*)ft_malloc(450);
 	//		addr4[0] = 42;
 	////		ft_free(addr);
 	////		ft_free(addr1);
@@ -154,15 +137,15 @@ int main()
 	//	i = 0;
 	//	while (i < 2000)
 	//	{
-	//		addr = (char*)ft_malloc(12710);
+	//		addr = (char*)ft_malloc(127450);
 	//		addr[0] = 42;
-	//		addr1 = (char*)ft_malloc(12710);
+	//		addr1 = (char*)ft_malloc(127450);
 	//		addr1[0] = 42;
-	//		addr2 = (char*)ft_malloc(12710);
+	//		addr2 = (char*)ft_malloc(127450);
 	//		addr2[0] = 42;
-	//		addr3 = (char*)ft_malloc(12710);
+	//		addr3 = (char*)ft_malloc(127450);
 	//		addr3[0] = 42;
-	//		addr4 = (char*)ft_malloc(12710);
+	//		addr4 = (char*)ft_malloc(127450);
 	//		addr4[0] = 42;
 	////		ft_free(addr);
 	////		ft_free(addr1);
@@ -171,7 +154,6 @@ int main()
 	////		ft_free(addr4);
 	//		i++;
 	//	}
-
 	ft_test();
 	return (0);
 } 
