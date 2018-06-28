@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:13:59 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/27 17:23:48 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/28 16:03:04 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdio.h>
 
 
-void	defrag(t_block **p, void *ptr)
+void		defrag(t_block **p, void *ptr)
 {
 	t_block		*prev;
 
@@ -22,8 +22,7 @@ void	defrag(t_block **p, void *ptr)
 	while ((*p)->nxt)
 	{
 		if ((t_block *)((*p) + 1) == (t_block *)ptr)
-		{
-			(*p)->is_free = 1;
+		{ (*p)->is_free = 1;
 			if ((*p)->nxt && (*p)->nxt->is_free)
 			{
 				(*p)->size += (*p)->nxt->size + sizeof(t_block);
@@ -44,12 +43,26 @@ void	defrag(t_block **p, void *ptr)
 
 void		delete_page(t_block *p, t_page **page, t_page **prev, int i)
 {
-	if ((p->size == (*page)->size - sizeof(t_block)) && (*page) != g_zone[i].page)
+	if ((p->size == (*page)->size - sizeof(t_block)) && (*page) == g_zone[i].page && i == 2)
 	{
-		if ((*prev))
-			(*prev)->nxt = NULL;
-		if ((*prev) && (*page)->nxt)
-			(*prev)->nxt = (*page)->nxt;
+		if ((*page) == g_zone[2].page->last && !(*prev))
+		{
+			g_zone[2].total_size = 0; 
+			g_zone[2].page->last = NULL;
+		}
+		if ((*page)->nxt)
+		{
+			g_zone[2].page = (*page)->nxt;
+			g_zone[2].page->last = g_zone[2].page;
+		}
+		munmap((*page), (*page)->size + sizeof(t_page));
+	}
+	else if ((p->size == (*page)->size - sizeof(t_block)) && (*page) != g_zone[i].page)
+	{
+		if (i == 2 && (*page) == g_zone[2].page->last && (*prev))
+			g_zone[2].page->last = (*prev);
+		(*prev) ? (*prev)->nxt = NULL : 0;
+		((*prev) && (*page)->nxt) ? (*prev)->nxt = (*page)->nxt : 0;
 		munmap((*page), (*page)->size + sizeof(t_page));
 	}
 }
@@ -59,23 +72,19 @@ void		large_free(void *ptr)
 	t_block		*p;
 	t_page		*page;
 	t_page		*prev;
-	int			i;
 
-	i = -1;
-	p = NULL;
 	page = g_zone[2].page;
-	p = (((t_block *)(page + 1)) + 1);
-	while (page->nxt)
+	p = (t_block *)(page + 1);
+	while (page)
 	{
 		if (((t_block *)(page + 1) + 1) == ptr)
 		{
 			p = (t_block *)(page + 1);
 			delete_page(p, &page, &prev, 2);
-			break ;
+			return ;
 		}
 		prev = page;
 		page = page->nxt;
-		i++;
 	}
 }
 
