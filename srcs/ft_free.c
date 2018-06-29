@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:13:59 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/29 12:42:01 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/29 16:31:50 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,15 @@ void		delete_page(t_block *p, t_page **page, t_page **prev, int i)
 		else
 		{
 			g_zone[2].total_size = 0; 
-			g_zone[2].page->last = NULL;
+			g_zone[2].last = NULL;
 			g_zone[2].page = NULL;
 		}
 		munmap((*page), (*page)->size + sizeof(t_page));
 	}
 	else if ((p->size == (*page)->size - sizeof(t_block)) && (*page) != g_zone[i].page)
 	{
-		if (i == 2 && (*page) == g_zone[2].page->last && (*prev))
-			g_zone[2].page->last = (*prev);
+		if (i == 2 && (*page) == g_zone[2].last && (*prev))
+			g_zone[2].last = (*prev);
 		(*prev) ? (*prev)->nxt = NULL : 0;
 		((*prev) && (*page)->nxt) ? (*prev)->nxt = (*page)->nxt : 0;
 		munmap((*page), (*page)->size + sizeof(t_page));

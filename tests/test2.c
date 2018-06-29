@@ -11,8 +11,7 @@ int main()
 	int	i;
 
 	i = 0;
-
-	i = 0;
+	ft_putendl("TINY MALLOC TEST");
 	while (i < 5000)
 	{
 		addr = (char*)ft_malloc(450);

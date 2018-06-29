@@ -6,16 +6,15 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/29 12:11:26 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/06/29 16:31:40 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft_malloc.h"
 #include <stdio.h>
 
-t_zone g_zone[3] = {{0, NULL},
-	{0, NULL},
-	{0, NULL}};
+t_zone g_zone[3] = {{0, NULL, NULL},
+	{0, NULL, NULL}, {0, NULL, NULL}};
 
 int		no_place(t_block *p, size_t alloc_size)
 {
@@ -34,7 +33,7 @@ int		first_call(int index, size_t zone_size)
 		g_zone[index].total_size = zone_size;
 		g_zone[index].page->size = zone_size - sizeof(t_page);
 		g_zone[index].page->nxt = NULL;
-		g_zone[index].page->last = g_zone[index].page;
+		g_zone[index].last = g_zone[index].page;
 		return (1);
 	}
 	return (0);
@@ -61,13 +60,13 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 	page = NULL;
 	fzone = first_call(index, zone_size);
 	page = g_zone[index].page;
-	(alloc_size >= LARGE) ? page = g_zone[index].page->last : 0;
-	while (page->nxt)
+	(alloc_size >= LARGE) ? page = g_zone[index].last : 0;
+	while (page && page->nxt)
 		page = page->nxt;
 	p = (t_block *)(page + 1);
-	while (p->nxt && no_place(p, alloc_size))
+	while (p && p->nxt && no_place(p, alloc_size))
 		p = p->nxt;
-	if ((char *)(p + 1) + alloc_size + 24 >= (char *)(page + 1) + zone_size && index != 2)
+	if ((char *)(p + 1) + alloc_size + sizeof(t_page) >= (char *)(page + 1) + zone_size && index != 2)
 	{
 		page->nxt = mmap(NULL, zone_size, PROT_WRITE | PROT_READ,
 				MAP_ANON | MAP_PRIVATE, -1, 0);
@@ -75,7 +74,7 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 		page->nxt->size = zone_size - sizeof(t_page);
 		page->nxt->nxt = NULL;
 		p = (t_block *)(page->nxt + 1);
-		g_zone[index].page->last = page;
+		g_zone[index].last = page;
 	}
 	else if (index == 2 && fzone == 0)
 	{
@@ -85,7 +84,7 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 		page->nxt->size = zone_size - sizeof(t_page);
 		page->nxt->nxt = NULL;
 		p = (t_block *)(page->nxt + 1);
-		g_zone[index].page->last = page->nxt;
+		g_zone[index].last = page->nxt;
 	}
 	p->is_free = 0;
 	p->size = alloc_size;
