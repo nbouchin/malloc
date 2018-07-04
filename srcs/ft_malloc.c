@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/06/29 16:40:06 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/07/04 13:02:05 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,26 @@ void	create_free_node(t_block *p, t_page *page, size_t alloc_size)
 	}
 }
 
+void	alloc_next(t_page **page, size_t zone_size, t_block **p, int index)
+{
+		(*page)->nxt = mmap(NULL, zone_size, PROT_WRITE | PROT_READ,
+				MAP_ANON | MAP_PRIVATE, -1, 0);
+		g_zone[index].total_size += zone_size;
+		(*page)->nxt->size = zone_size - sizeof(t_page);
+		(*page)->nxt->nxt = NULL;
+		(*p) = (t_block *)((*page)->nxt + 1);
+}
+
+
+void	find_place(t_page **page, t_block **p, size_t alloc_size)
+{
+	while ((*page) && (*page)->nxt)
+		(*page) = (*page)->nxt;
+	(*p) = (t_block *)((*page) + 1);
+	while ((*p) && (*p)->nxt && no_place((*p), alloc_size))
+		(*p) = (*p)->nxt;
+}
+
 void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 {
 	t_block		*p;
@@ -61,35 +81,20 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 	fzone = first_call(index, zone_size);
 	page = g_zone[index].page;
 	(alloc_size >= LARGE) ? page = g_zone[index].last : 0;
-	while (page && page->nxt)
-		page = page->nxt;
-	p = (t_block *)(page + 1);
-	while (p && p->nxt && no_place(p, alloc_size))
-		p = p->nxt;
-	if ((char *)(p + 1) + alloc_size + sizeof(t_page) >= (char *)(page + 1) + zone_size && index != 2)
+	find_place(&page, &p, alloc_size);
+	if (((char *)(p + 1) + alloc_size + sizeof(t_page) >= (char *)(page + 1)
+				+ zone_size && index != 2) || (index == 2 && fzone == 0))
 	{
-		page->nxt = mmap(NULL, zone_size, PROT_WRITE | PROT_READ,
-				MAP_ANON | MAP_PRIVATE, -1, 0);
-		g_zone[index].total_size += zone_size;
-		page->nxt->size = zone_size - sizeof(t_page);
-		page->nxt->nxt = NULL;
-		p = (t_block *)(page->nxt + 1);
-		g_zone[index].last = page;
-	}
-	else if (index == 2 && fzone == 0)
-	{
-		page->nxt = mmap(NULL, zone_size, PROT_WRITE | PROT_READ,
-				MAP_ANON | MAP_PRIVATE, -1, 0);
-		g_zone[index].total_size += zone_size;
-		page->nxt->size = zone_size - sizeof(t_page);
-		page->nxt->nxt = NULL;
-		p = (t_block *)(page->nxt + 1);
-		g_zone[index].last = page->nxt;
+		alloc_next(&page, zone_size, &p, index);
+		if ((char *)(p + 1) + alloc_size
+				+ sizeof(t_page) >= (char *)(page + 1) + zone_size && index != 2)
+			g_zone[index].last = page;
+		else if (index == 2 && fzone == 0)
+			g_zone[index].last = page->nxt;
 	}
 	p->is_free = 0;
 	p->size = alloc_size;
-	if (alloc_size < LARGE)
-		create_free_node(p, page, alloc_size);
+	(alloc_size < LARGE) ?  create_free_node(p, page, alloc_size) : 0;
 	return (p + 1);
 }
 

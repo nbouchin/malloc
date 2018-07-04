@@ -18,14 +18,14 @@ int main()
 		addr[0] = 42;
 		addr1 = (char*)ft_malloc(450);
 		addr1[0] = 42;
-		addr2 = (char*)ft_malloc(450);
+		ft_free(addr1);
+		addr2 = (char*)ft_malloc(350);
 		addr2[0] = 42;
 		addr3 = (char*)ft_malloc(450);
 		addr3[0] = 42;
 		addr4 = (char*)ft_malloc(450);
 		addr4[0] = 42;
 		ft_free(addr);
-		ft_free(addr1);
 		ft_free(addr2);
 		ft_free(addr3);
 		ft_free(addr4);
