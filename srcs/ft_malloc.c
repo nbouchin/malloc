@@ -23,7 +23,7 @@ int		no_place(t_block *p, size_t alloc_size)
 	return (1);
 }
 
-int		first_call(int index, size_t zone_size)
+int		init_zone(int index, size_t zone_size)
 {
 	t_block	*p;
 
@@ -88,7 +88,7 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 
 	fzone = 1;
 	p = NULL;
-	fzone = first_call(index, zone_size);
+	fzone = init_zone(index, zone_size);
 	if (alloc_size >= LARGE)
 	{
 		page = g_zone[index].last;
