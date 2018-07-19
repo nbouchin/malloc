@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/07/19 15:55:52 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/07/04 13:02:05 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,17 @@
 t_zone g_zone[3] = {{0, NULL, NULL},
 	{0, NULL, NULL}, {0, NULL, NULL}};
 
-int		is_place(t_block *p, size_t alloc_size)
+int		no_place(t_block *p, size_t alloc_size)
 {
 	if (p->size >= alloc_size && p->is_free)
-		return (1);
-	return (0);
+		return (0);
+	return (1);
 }
 
 int		init_zone(int index, size_t zone_size)
 {
-	t_block	*p; 
+	t_block	*p;
+
 	p = NULL;
 	if (!g_zone[index].total_size)
 	{
@@ -57,35 +58,28 @@ void	create_free_node(t_block *p, t_page *page, size_t alloc_size)
 
 void	alloc_next_zone(t_page **page, size_t zone_size, t_block **p, int index)
 {
-	(*page)->nxt = mmap(NULL, zone_size, PROT_WRITE | PROT_READ,
-			MAP_ANON | MAP_PRIVATE, -1, 0);
-	g_zone[index].total_size += zone_size;
-	(*page)->nxt->size = zone_size - sizeof(t_page);
-	(*page)->nxt->nxt = NULL;
-	(*p) = (t_block *)((*page)->nxt + 1);
-	(*p)->is_free = 1;
-	(*p)->nxt = NULL;
-	(*p)->size = g_zone[index].page->size - sizeof(t_block *);
+		(*page)->nxt = mmap(NULL, zone_size, PROT_WRITE | PROT_READ,
+				MAP_ANON | MAP_PRIVATE, -1, 0);
+		g_zone[index].total_size += zone_size;
+		(*page)->nxt->size = zone_size - sizeof(t_page);
+		(*page)->nxt->nxt = NULL;
+		(*p) = (t_block *)((*page)->nxt + 1);
+		(*p)->is_free = 1;
+		(*p)->nxt = NULL;
+		(*p)->size = g_zone[index].page->size - sizeof(t_block *);
 }
 
 void	find_place(t_page **page, t_block **p, size_t alloc_size)
 {
-	t_page *pswap;
-
-	pswap = NULL;
-	while ((*page))
+	while (*page)
 	{
 		(*p) = (t_block *)((*page) + 1);
-		while ((*p))
-		{
-			if (is_place((*p), alloc_size))
-				return ;
+		while ((*p)->nxt && no_place((*p), alloc_size))
 			(*p) = (*p)->nxt;
-		}
-		pswap = (*page);
+		if (!no_place((*p), alloc_size))
+			break ;
 		(*page) = (*page)->nxt;
 	}
-	(*page) = pswap;
 }
 
 void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
@@ -107,7 +101,8 @@ void	*new_zone(size_t index, size_t alloc_size, size_t zone_size)
 		page = g_zone[index].page;
 		find_place(&page, &p, alloc_size);
 	}
-	if (p == NULL || (alloc_size > (char *)(page + 1) + zone_size - (char *)(p + 1) + alloc_size + sizeof(t_block *)))
+	if (((char *)(p + 1) + alloc_size + sizeof(t_block *) >= (char *)(page + 1)
+		 + zone_size && index != 2) || (index == 2 && fzone == 0))
 	{
 		alloc_next_zone(&page, zone_size, &p, index);
 		if ((char *)(p + 1) + alloc_size
