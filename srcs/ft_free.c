@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:13:59 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/07/19 16:06:59 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/07/24 16:33:42 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void		defrag(t_block **p, void *ptr)
 	while ((*p)->nxt)
 	{
 		if ((t_block *)((*p) + 1) == (t_block *)ptr)
-		{ (*p)->is_free = 1;
+		{
+			(*p)->is_free = 1;
 			if ((*p)->nxt && (*p)->nxt->is_free)
 			{
 				(*p)->size += (*p)->nxt->size + sizeof(t_block);
@@ -92,11 +93,13 @@ void		tiny_small_free(void *ptr)
 	t_block		*p;
 	t_page		*page;
 	t_page		*prev;
+	t_page		*pswap;
 
 	i = 0;
 	p = NULL;
 	page = NULL;
 	prev = NULL;
+	pswap = NULL;
 	while (i <= 1)
 	{
 		page = g_zone[i].page;
@@ -118,8 +121,6 @@ void		tiny_small_free(void *ptr)
 
 void		ft_free(void *ptr)
 {
-	(void)ptr;
-	return ;
-	//tiny_small_free(ptr);
-	//large_free(ptr);
+	tiny_small_free(ptr);
+	large_free(ptr);
 }

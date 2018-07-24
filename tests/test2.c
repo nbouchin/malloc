@@ -24,11 +24,11 @@ int main()
 		addr3[0] = 42;
 		addr4 = (char*)ft_malloc(450);
 		addr4[0] = 42;
-//		ft_free(addr);
-//		ft_free(addr1);
-//		ft_free(addr2);
-//		ft_free(addr3);
-//		ft_free(addr4);
+		ft_free(addr);
+		ft_free(addr2);
+		ft_free(addr1);
+		ft_free(addr3);
+		ft_free(addr4);
 		i++;
 	}
 //	ft_putendl("SMALL MALLOC TEST");

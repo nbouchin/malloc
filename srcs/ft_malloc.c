@@ -6,12 +6,11 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:03:40 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/07/19 16:38:16 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/07/24 15:20:48 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft_malloc.h"
-#include <stdio.h>
 
 t_zone g_zone[3] = {{0, NULL, NULL},
 	{0, NULL, NULL}, {0, NULL, NULL}};
@@ -26,6 +25,7 @@ int		is_place(t_block *p, size_t alloc_size)
 int		init_zone(int index, size_t zone_size)
 {
 	t_block	*p; 
+
 	p = NULL;
 	if (!g_zone[index].total_size)
 	{
