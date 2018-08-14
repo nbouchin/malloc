@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 15:14:24 by nbouchin          #+#    #+#             */
-/*   Updated: 2017/07/27 16:01:20 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/07/26 11:13:07 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void				ft_putchar(char c);
 void				ft_putstr(char const *s);
 char				**ft_strsplit(char const *s, char c);
 char				*ft_itoa(int n);
+void				ft_printitoabase(uintmax_t n, char *str, int base);
 char				**ft_sort_params(char **array);
 
 /*

@@ -1,15 +1,6 @@
+#include "../includes/libft_malloc.h"
 #include <stdio.h>
 
-int main(int argc, char *argv[])
+int	main(int argc, char **argv)
 {
-    if (i == 2)
-		printf("%s\n", );
-
-    return 0;
-
-
-
-
-
-	
 }

@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:13:59 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/07/24 16:33:42 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/07/26 14:45:59 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,8 @@ void		tiny_small_free(void *ptr)
 
 void		ft_free(void *ptr)
 {
-	tiny_small_free(ptr);
-	large_free(ptr);
+//	tiny_small_free(ptr);
+//	large_free(ptr);
+	(void)ptr;
+	return ;
 }

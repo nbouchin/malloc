@@ -6,7 +6,7 @@
 #    By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/27 13:56:26 by nbouchin          #+#    #+#              #
-#    Updated: 2017/11/08 21:42:07 by leukondor        ###   ########.fr        #
+#    Updated: 2018/07/26 11:11:23 by nbouchin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC		=	check/ft_isalnum.c				\
 			check/ft_isupper.c				\
 			conv/ft_atoi.c					\
 			conv/ft_itoa.c					\
+			conv/ft_printitoabase.c				\
 			conv/ft_tolower.c				\
 			conv/ft_toupper.c				\
 			tab/ft_sort_params.c			\

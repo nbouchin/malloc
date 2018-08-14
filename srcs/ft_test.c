@@ -27,7 +27,10 @@ void		ft_test()
 			while (p)
 			{
 				total += p->size;
-				dprintf(1, "%p - %p : %lu octets\n", p, p + p->size, p->size);
+				if (p->is_free)
+					dprintf(1, "%p - %p : %lu free octets\n", p, p + p->size, p->size);
+				else
+					dprintf(1, "%p - %p : %lu nonfree octets\n", p, p + p->size, p->size);
 				p = p->nxt;	
 			}
 			page = page->nxt;
