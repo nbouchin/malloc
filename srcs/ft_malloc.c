@@ -118,11 +118,10 @@ void	*new_zone(size_t malloc_type, size_t alloc_size, size_t zone_size)
 	if (!is_free_block)
 	{
 		alloc_next_zone(&page, zone_size, &p, malloc_type);
-		if ((char *)(p + 1) + alloc_size
-				+ sizeof(t_page) >= (char *)(page + 1) + zone_size && malloc_type != 2)
-			g_zone[malloc_type].last = page;
-		else if (malloc_type == 2 && fzone == 0)
+		if (malloc_type == 2 && fzone == 0)
 			g_zone[malloc_type].last = page->nxt;
+		else
+			g_zone[malloc_type].last = page;
 	}
 	p->is_free = 0;
 	p->size = alloc_size;
@@ -156,5 +155,5 @@ void	*get_allocation_type(size_t alloc_size)
 
 void	*ft_malloc(size_t alloc_size)
 {
-	return (check_zone(alloc_size));
+	return (get_allocation_type(alloc_size));
 }
