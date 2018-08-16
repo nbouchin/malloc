@@ -13,24 +13,31 @@
 #include "../includes/libft_malloc.h"
 #include <stdio.h>
 
+/*
+**	Memory free and defragmentation.
+*/
 
 void		defrag(t_block **p, void *ptr)
 {
 	t_block		*prev;
 
 	prev = NULL;
-	while ((*p)->nxt)
+//	printf("node to dell : %p, node finded : %p\n", (t_block*)ptr, (t_block*)((*p) + 1));
+	while ((*p))
 	{
-		if ((t_block *)((*p) + 1) == (t_block *)ptr)
+		if ((t_block*)((*p) + 1) == (t_block*)ptr)
 		{
+//			ft_putendl("NODE_TO_FREE");
 			(*p)->is_free = 1;
 			if ((*p)->nxt && (*p)->nxt->is_free)
 			{
+//				ft_putendl("NEXT_IS_FREE");
 				(*p)->size += (*p)->nxt->size + sizeof(t_block);
 				(*p)->nxt = (*p)->nxt->nxt;
 			}
 			if (prev && prev->is_free)
 			{
+//				ft_putendl("PREV_IS_FREE");
 				prev->size += (*p)->size + sizeof(t_block);
 				prev->nxt = (*p)->nxt;
 				(*p) = prev;
@@ -41,6 +48,10 @@ void		defrag(t_block **p, void *ptr)
 		(*p) = (*p)->nxt;
 	}
 }
+
+/*
+**	Delete a page if this one is free and rechain linked list.
+*/
 
 void		delete_page(t_block *p, t_page **page, t_page **prev, int i)
 {
@@ -66,6 +77,10 @@ void		delete_page(t_block *p, t_page **page, t_page **prev, int i)
 	}
 }
 
+/*
+**	Large allocation free runtime.
+*/
+
 void		large_free(void *ptr)
 {
 	t_block		*p;
@@ -87,6 +102,10 @@ void		large_free(void *ptr)
 	}
 }
 
+/*
+**	Tiny and small allocation free runtime.
+*/
+
 void		tiny_small_free(void *ptr)
 {
 	int			i;
@@ -105,13 +124,24 @@ void		tiny_small_free(void *ptr)
 		page = g_zone[i].page;
 		while (page)
 		{
-			if ((char*)ptr >= (char*)page &&
-					(char*)ptr <= (char*)(page) + (i == 0) ? N : M)
+			if (i == 0)
 			{
-				p = (t_block *)(page + 1);
-				defrag(&p, ptr);
+				if ((char*)ptr >= (char*)page && (char*)ptr <= (char*)(page) + N)
+				{
+					p = (t_block *)(page + 1);
+					defrag(&p, ptr);
+					delete_page(p, &page, &prev, i);
+				}
 			}
-			delete_page(p, &page, &prev, i);
+			else if (i == 1)
+			{
+				if ((char*)ptr >= (char*)page && (char*)ptr <= (char*)(page) + M)
+				{
+					p = (t_block *)(page + 1);
+					defrag(&p, ptr);
+					delete_page(p, &page, &prev, i);
+				}
+			}
 			prev = page;
 			page = page->nxt;
 		}
@@ -121,8 +151,11 @@ void		tiny_small_free(void *ptr)
 
 void		ft_free(void *ptr)
 {
-//	tiny_small_free(ptr);
-//	large_free(ptr);
+	if (ptr == 0)
+		return ;
+//	ft_putendl("FREE CALL");
+	tiny_small_free(ptr);
+	large_free(ptr);
 	(void)ptr;
 	return ;
 }
