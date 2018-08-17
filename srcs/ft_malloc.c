@@ -22,8 +22,18 @@ t_zone g_zone[3] = {{0, NULL, NULL},
 
 int		is_place(t_block *p, size_t alloc_size)
 {
+//	dprintf(2, "%p, %lu, %d\n", p, p->size, p->is_free);
+//	ft_putnbr(p->size);
+//	ft_putstr(" - ");
+//	ft_putnbr(alloc_size);
+//	ft_putstr(" - ");
+//	ft_putnbr(p->is_free);
+//	ft_putendl("");
 	if (p->size >= alloc_size && p->is_free)
+	{
+//		ft_putendl("FIND_FREE_BLOCK");
 		return (1);
+	}
 	return (0);
 }
 
@@ -40,7 +50,7 @@ int		init_zone(int malloc_type, size_t zone_size)
 	{
 		g_zone[malloc_type].page = mmap(NULL, zone_size, PROT_WRITE | PROT_READ
 										, MAP_ANON | MAP_PRIVATE, -1, 0);
-		ft_bzero(g_zone[malloc_type].page, sizeof(t_page));
+		//ft_bzero(g_zone[malloc_type].page, sizeof(t_page));
 		g_zone[malloc_type].total_size = zone_size;
 		g_zone[malloc_type].page->size = zone_size - sizeof(t_page *);
 		g_zone[malloc_type].page->nxt = NULL;
@@ -59,13 +69,13 @@ int		init_zone(int malloc_type, size_t zone_size)
 **	The free node size equals to the actual block to the end of the zone.
 */
 
-void	create_free_node(t_block *p, t_page *page, size_t alloc_size)
+void	create_free_node(t_block **p, size_t alloc_size, size_t old_block_size)
 {
-	if (!p->nxt)
+	if ((*p)->nxt)
 	{
-		p->nxt = (t_block *)((char *)(p + 1) + alloc_size);
-		p->nxt->size = ((char*)page + page->size) - (char *)(p->nxt + 1);
-		p->nxt->is_free = 1;
+		(*p)->nxt = (t_block *)((char *)((*p) + 1) + alloc_size);		
+		(*p)->nxt->size = old_block_size - alloc_size;
+		(*p)->nxt->is_free = 1;
 	}
 }
 
@@ -82,10 +92,12 @@ void	alloc_next_zone(t_page **page, size_t zone_size
 	g_zone[malloc_type].total_size += zone_size;
 	(*page)->nxt->size = zone_size - sizeof(t_page);
 	(*page)->nxt->nxt = NULL;
-	(*p) = (t_block *)((*page)->nxt + 1);
+	(*p) = (t_block *)((*page)->nxt) + 1;
+	dprintf(2, "%p - %p\n", (*page)->nxt, (*p));
 	(*p)->is_free = 1;
 	(*p)->nxt = NULL;
 	(*p)->size = g_zone[malloc_type].page->size - sizeof(t_block *);
+
 }
 
 /*
@@ -100,13 +112,10 @@ int		find_free_block(t_page **page, t_block **p, size_t alloc_size)
 	while ((*page))
 	{
 		(*p) = (t_block *)((*page) + 1);
-		while ((*p)->nxt)
-		{
+		while ((*p))
+		{			
 			if (is_place((*p), alloc_size))
-			{
-//				ft_putendl("FIND_FREE_NODE");
 				return (1);
-			}
 			(*p) = (*p)->nxt;
 		}
 		pswap = (*page);
@@ -146,22 +155,26 @@ void	*malloc_core(size_t malloc_type, size_t alloc_size, size_t zone_size)
 	t_page		*page;
 	int			fzone;
 	int			is_free_block;
+	size_t		old_block_size;
 
 	p = NULL;
+	old_block_size = 0;
+	
 	fzone = init_zone(malloc_type, zone_size);
 	is_free_block = get_position(alloc_size, &page, malloc_type, &p);
 	if (!is_free_block)
 	{
+//		ft_putendl("NEW_PAGE");
 		alloc_next_zone(&page, zone_size, &p, malloc_type);
-		if (malloc_type == 2 && fzone == 0)
+		if (malloc_type == 2 && !fzone)
 			g_zone[malloc_type].last = page->nxt;
 		else
 			g_zone[malloc_type].last = page;
 	}
+	old_block_size = p->size;
 	p->is_free = 0;
 	p->size = alloc_size;
-	(alloc_size < LARGE) ? create_free_node(p, page, alloc_size) : 0;
-//	dprintf(2, "ALLOCATION_ADDRESS: %p\n", p + 1);
+	(alloc_size < LARGE) ? create_free_node(&p, alloc_size, old_block_size) : 0;
 	return (p + 1);
 }
 

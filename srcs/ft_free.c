@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:13:59 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/07/26 14:45:59 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/08/16 16:14:00 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void		delete_page(t_block *p, t_page **page, t_page **prev, int i)
 {
 	if ((p->size == (*page)->size - sizeof(t_block)) && (*page) == g_zone[i].page && i == 2)
 	{
+		ft_putendl("DELETE_PAGE");
 		if ((*page)->nxt)
 			g_zone[2].page = (*page)->nxt;
 		else
@@ -69,6 +70,7 @@ void		delete_page(t_block *p, t_page **page, t_page **prev, int i)
 	}
 	else if ((p->size == (*page)->size - sizeof(t_block)) && (*page) != g_zone[i].page)
 	{
+		ft_putendl("DELETE_PAGE");
 		if (i == 2 && (*page) == g_zone[2].last && (*prev))
 			g_zone[2].last = (*prev);
 		(*prev) ? (*prev)->nxt = NULL : 0;
@@ -129,7 +131,7 @@ void		tiny_small_free(void *ptr)
 				if ((char*)ptr >= (char*)page && (char*)ptr <= (char*)(page) + N)
 				{
 					p = (t_block *)(page + 1);
-					defrag(&p, ptr);
+//					defrag(&p, ptr);
 					delete_page(p, &page, &prev, i);
 				}
 			}
@@ -138,7 +140,7 @@ void		tiny_small_free(void *ptr)
 				if ((char*)ptr >= (char*)page && (char*)ptr <= (char*)(page) + M)
 				{
 					p = (t_block *)(page + 1);
-					defrag(&p, ptr);
+//					defrag(&p, ptr);
 					delete_page(p, &page, &prev, i);
 				}
 			}

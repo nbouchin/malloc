@@ -6,7 +6,7 @@
 #    By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/27 13:56:26 by nbouchin          #+#    #+#              #
-#    Updated: 2018/06/27 09:24:38 by nbouchin         ###   ########.fr        #
+#    Updated: 2018/08/17 10:45:29 by nbouchin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,8 +47,8 @@ clean:
 	make -C srcs/libft/ clean
 
 run: 
-	gcc  $(FLAGS) -o test2 tests/test2.c ./objs/*.o -I ./includes -L ./srcs/libft -lft
-	./test2
+	gcc  $(FLAGS) -o my-test tests/my-test.c ./objs/*.o -I ./includes -L ./srcs/libft -lft
+	./my-test
 
 fclean: clean
 	rm -f libft_malloc.so $(NAME)
