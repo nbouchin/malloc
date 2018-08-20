@@ -21,7 +21,7 @@ FLAGS   = 	-Wall -Wextra -Werror -g
 SRCDIR  = 	srcs/
 OBJDIR  = 	objs/
 SRC	=	ft_free.c		\
-		ft_malloc.c	\
+		malloc.c	\
 		ft_test.c \
 		ft_realloc.c
 

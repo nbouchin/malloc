@@ -52,13 +52,13 @@ int		init_zone(int malloc_type, size_t zone_size)
 										, MAP_ANON | MAP_PRIVATE, -1, 0);
 		//ft_bzero(g_zone[malloc_type].page, sizeof(t_page));
 		g_zone[malloc_type].total_size = zone_size;
-		g_zone[malloc_type].page->size = zone_size - sizeof(t_page *);
+		g_zone[malloc_type].page->size = zone_size - sizeof(t_page);
 		g_zone[malloc_type].page->nxt = NULL;
 		g_zone[malloc_type].last = g_zone[malloc_type].page;
 		p = ((t_block *)g_zone[malloc_type].page) + 1;
 		p->is_free = 1;
 		p->nxt = NULL;
-		p->size = g_zone[malloc_type].page->size - sizeof(t_block *);
+		p->size = g_zone[malloc_type].page->size - sizeof(t_block);
 		return (1);
 	}
 	return (0);
