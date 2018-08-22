@@ -68,7 +68,7 @@ t_block	*search_free_block(t_page **page, size_t alloc_size)
 		block = (t_block *)((*page) + 1);
 		while (block)
 		{
-			if (block->is_free == 1 && alloc_size <= block->size)
+			if (block->is_free == 1 && block->size >= alloc_size)
 				return (block);
 			block  = block->nxt;
 		}
@@ -104,8 +104,7 @@ void	relink_block(t_block *block, size_t alloc_size, size_t offset)
 		if (backup->size > alloc_size)
 		{
 			fill_block(block, (t_block *)((char *)block + get_offset(block->size + sizeof(t_block), offset)), alloc_size, 0);
-			fill_block(block->nxt, backup, get_offset(old_size, offset)
-			- get_offset(block->size, offset), 1);
+			fill_block(block->nxt, backup, get_offset(old_size, offset) - get_offset(block->size, offset), 1);
 		}
 		else
 			fill_block(block, backup, alloc_size, 0);
@@ -113,10 +112,8 @@ void	relink_block(t_block *block, size_t alloc_size, size_t offset)
 	else
 	{
 		old_size = block->size;
-//		dprintf(2, "%lu\n" ,get_offset(alloc_size, offset));
 		fill_block(block, (t_block *)((char *)block + get_offset(alloc_size + sizeof(t_block), offset)), alloc_size, 0);
-		fill_block(block->nxt, NULL, get_offset(old_size, offset)
-		- get_offset(block->size, offset), 1);
+		fill_block(block->nxt, NULL, get_offset(old_size, offset) - get_offset(block->size + sizeof(t_block), offset), 1);
 	}
 }
 
@@ -128,19 +125,22 @@ void	*tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 {
 	t_block	*block;
 	t_page	*page;
+	size_t	offset;
 
 	new_zone(alloc_size, page_type);
 	page = g_zone[page_type].page;
-	block = search_free_block(&page, alloc_size);
+	offset = (alloc_type == TINY) ? 16 : 512;
+	block = search_free_block(&page, get_offset(alloc_size, offset));
 	if (block)
 		relink_block(block, alloc_size, alloc_type);
 	else
 	{
 		if (alloc_type == TINY)
-			page->nxt = new_page(N);
+			page = new_page(N);
 		else
-			page->nxt = new_page(M);
-		block = (t_block *)(page->nxt + 1);
+			page = new_page(M);
+		block = search_free_block(&page, get_offset(alloc_size, offset));
+		relink_block(block, alloc_size, alloc_type);
 	}
 	return (block + 1);
 }
