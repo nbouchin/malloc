@@ -65,7 +65,6 @@ typedef	struct		s_page
 {
 	size_t			size;
 	struct s_page	*nxt;
-	struct s_block	*fblock;
 }					t_page;
 
 typedef	struct		s_zone

@@ -25,15 +25,13 @@ t_page		*new_page(size_t page_size)
 	t_block	*p;
 	t_page	*page;
 
-	ft_putendl("NEW_PAGE");
-	dprintf(1, "%lu\n", page_size);
+//	dprintf(1, "%lu\n", page_size);
 	page = mmap(NULL, page_size, PROT_WRITE | PROT_READ
 				, MAP_ANON | MAP_PRIVATE, -1, 0);
 	page->size = page_size - sizeof(t_page);
 	page->nxt = NULL;
 	p = (t_block *)(page + 1);
 	fill_block(p, NULL, page->size - sizeof(t_block), 1);
-	page->fblock = p;
 	return (page);
 }
 
@@ -45,7 +43,7 @@ void	new_zone(size_t zone_size, int zone_type)
 {
 	if (!g_zone[zone_type].page)
 	{
-		ft_putendl("NEW_ZONE");
+//		ft_putendl("NOUVELLE ZONE");
 		if (zone_type == 0)
 			g_zone[zone_type].page = new_page(N);
 		else if (zone_type == 1)
@@ -66,13 +64,16 @@ t_block	*search_free_block(t_page **page, size_t alloc_size)
 	t_block	*block;
 
 	block = NULL;
-	while (*page)
+	while ((*page))
 	{
-		block = (*page)->fblock;
-		while (block)
+		block = (t_block *)((*page) + 1);
+		while ((block))
 		{
-			if (alloc_size <= block->size)
+			if (block->is_free && alloc_size <= block->size)
+			{
+//				dprintf(2, "%lu\n", block->size);
 				return (block);
+			}
 			block  = block->nxt;
 		}
 		(*page) = (*page)->nxt;
@@ -89,48 +90,11 @@ size_t	get_offset(size_t alloc_size, int offset)
 	return (alloc_size = (alloc_size + (offset - 1)) & ~(offset - 1));
 }
 
-void	update_flist(t_block *to_del, t_block *to_keep, t_page *page, int state)
-{
-	t_block	*prev;
-	t_block	*block;
-
-	prev = NULL;
-	block = page->fblock;
-	while (block)
-	{
-		if (block == to_del)
-		{
-			if (state == 0)
-			{
-				if (prev)
-					prev->nxt = block->nxt;
-				else
-				{
-					block = block->nxt;
-					page->fblock = block;
-				}
-			}
-			else if (state == 1)
-			{
-				if (prev)
-					prev->nxt = to_keep;
-				else
-				{
-					block = to_keep;
-					page->fblock = block;
-				}
-			}
-		}
-		prev = block;
-		block = block->nxt;
-	}
-}
-
 /*
 **	Relink a new non-free block, with the old free block and the old free block next block.
 */
 
-t_block	*relink_block(t_block *block, size_t alloc_size, size_t offset, t_page *page)
+t_block	*relink_block(t_block *block, size_t alloc_size, size_t offset)
 {
 	t_block *backup;
 	size_t	old_size;
@@ -143,31 +107,19 @@ t_block	*relink_block(t_block *block, size_t alloc_size, size_t offset, t_page *
 		backup = block->nxt;
 		if (backup->size > alloc_size)
 		{
-//			ft_putendl("PREMIER");
 			fill_block(block, block + get_offset(block->size, offset), alloc_size, 0);
-//			dprintf(2, "block : %p, block_next : %p\n", block, block + get_offset(block->size, offset));
 			fill_block(block->nxt, backup, get_offset(old_size, offset)
-		   - get_offset(block->size, offset), 1);
-//			dprintf(2, "block : %p, block_next : %p\n", block, backup);
-			update_flist(block, backup, page, 1);
+			- get_offset(block->size, offset), 1);
 		}
 		else
-		{
-//			ft_putendl("DEUXIEME");
 			fill_block(block, backup, alloc_size, 0);
-//			dprintf(2, "block : %p, block_next : %p\n", block, backup);
-		}
 	}
 	else
 	{
-//		ft_putendl("TROISIEME");
 		old_size = block->size;
 		fill_block(block, block + get_offset(alloc_size, offset), alloc_size, 0);
-		dprintf(1, "page start : %p | page ends: %p block : %p, block_next : %p ||||||||| overlap : %lu\n", page, page + page->size, block, block + get_offset(alloc_size, offset), );
 		fill_block(block->nxt, NULL, get_offset(old_size, offset)
 		- get_offset(block->size, offset), 1);
-//		dprintf(2, "block : %p, block_next : %p\n", block, NULL);
-		update_flist(block, block->nxt, page, 1);
 	}
 	return (block);
 }
@@ -183,18 +135,18 @@ void	*tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 
 	new_zone(alloc_size, page_type);
 	page = g_zone[page_type].page;
+	dprintf(2, "%lu\n", sizeof(t_block));
 	block = search_free_block(&page, alloc_size);
 	if (block)
-		block = relink_block(block, alloc_size, alloc_type, page);
+		block = relink_block(block, alloc_size, alloc_type);
 	else
 	{
 		if (alloc_type == TINY)
 			page = new_page(N);
 		else
 			page = new_page(M);
-		block = ((t_block *)page) + 1;
+		block = (t_block *)(page + 1);
 	}
-//	dprintf(2, "%p - %lu : %p | %lu\n", block, block->size, (page + page->size), (char*)(page + page->size) - (char*)(block + block->size));
 	return (block);
 }
 
@@ -207,12 +159,12 @@ void	*ft_malloc(size_t alloc_size)
 //	ft_putendl("MALLOC_CALL");
 	if (alloc_size <= TINY)
 	{
-//		ft_putendl("TINY");
+		//ft_putendl("TINY");
 		return (tiny_small_allocation(alloc_size, 0, TINY));
 	}
 	else if (alloc_size <= SMALL)
 	{
-		ft_putendl("SMALL");
+//		ft_putendl("SMALL");
 		return (tiny_small_allocation(alloc_size, 1, SMALL));
 	}
 	else if (alloc_size >= LARGE)
