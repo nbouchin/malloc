@@ -56,15 +56,17 @@
 
 typedef struct		s_block
 {
+	char			is_free;
 	size_t			size;
 	struct s_block	*nxt;
-	int				is_free;
+	int				pad;
 }					t_block;
 
 typedef	struct		s_page
 {
 	size_t			size;
 	struct s_page	*nxt;
+	int				pad[3];
 }					t_page;
 
 typedef	struct		s_zone

@@ -1,88 +1,65 @@
-NEW_ZONE
-NEW_PAGE
-1998848
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1075f1018, block_next : 0x1075f1318 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1075f1318, block_next : 0x1075f1618 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1075f1618, block_next : 0x1075f7618 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1075f7618, block_next : 0x1075fd618 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1075fd618, block_next : 0x107603618 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107603618, block_next : 0x107609618 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107609618, block_next : 0x10760f618 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10760f618, block_next : 0x10760f918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10760f918, block_next : 0x107615918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107615918, block_next : 0x10761b918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10761b918, block_next : 0x107621918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107621918, block_next : 0x107627918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107627918, block_next : 0x10762d918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10762d918, block_next : 0x107633918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107633918, block_next : 0x107639918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107639918, block_next : 0x10763f918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10763f918, block_next : 0x107645918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107645918, block_next : 0x10764b918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10764b918, block_next : 0x107651918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107651918, block_next : 0x107657918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107657918, block_next : 0x10765d918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10765d918, block_next : 0x107663918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107663918, block_next : 0x107669918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107669918, block_next : 0x10766f918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10766f918, block_next : 0x107675918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107675918, block_next : 0x10767b918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10767b918, block_next : 0x107681918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107681918, block_next : 0x107687918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107687918, block_next : 0x10768d918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10768d918, block_next : 0x107693918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107693918, block_next : 0x107699918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107699918, block_next : 0x10769f918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10769f918, block_next : 0x1076a5918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1076a5918, block_next : 0x1076ab918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1076ab918, block_next : 0x1076b1918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1076b1918, block_next : 0x1076b7918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1076b7918, block_next : 0x1076bd918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1076bd918, block_next : 0x1076c3918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1076c3918, block_next : 0x1076c9918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1076c9918, block_next : 0x1076cf918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1076cf918, block_next : 0x1076d5918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1076d5918, block_next : 0x1076db918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1076db918, block_next : 0x1076e1918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1076e1918, block_next : 0x1076e7918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1076e7918, block_next : 0x1076ed918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1076ed918, block_next : 0x1076f3918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1076f3918, block_next : 0x1076f9918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1076f9918, block_next : 0x1076ff918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1076ff918, block_next : 0x107705918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107705918, block_next : 0x10770b918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10770b918, block_next : 0x107711918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107711918, block_next : 0x107717918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107717918, block_next : 0x10771d918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10771d918, block_next : 0x107723918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107723918, block_next : 0x107729918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107729918, block_next : 0x10772f918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10772f918, block_next : 0x107735918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107735918, block_next : 0x10773b918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10773b918, block_next : 0x107741918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107741918, block_next : 0x107747918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107747918, block_next : 0x10774d918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10774d918, block_next : 0x107753918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107753918, block_next : 0x107759918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107759918, block_next : 0x10775f918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10775f918, block_next : 0x107765918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107765918, block_next : 0x10776b918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10776b918, block_next : 0x107771918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107771918, block_next : 0x107777918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107777918, block_next : 0x10777d918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10777d918, block_next : 0x107783918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107783918, block_next : 0x107789918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107789918, block_next : 0x10778f918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10778f918, block_next : 0x107795918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x107795918, block_next : 0x10779b918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x10779b918, block_next : 0x1077a1918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1077a1918, block_next : 0x1077a7918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1077a7918, block_next : 0x1077ad918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1077ad918, block_next : 0x1077b3918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1077b3918, block_next : 0x1077b9918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1077b9918, block_next : 0x1077bf918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1077bf918, block_next : 0x1077c5918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1077c5918, block_next : 0x1077cb918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1077cb918, block_next : 0x1077d1918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1077d1918, block_next : 0x1077d7918 ||||||||| overlap : 47971776
-page start : 0x1075f1000 | page ends: 0x10a3b0dc0 block : 0x1077d7918, block_next : 0x1077dd918 ||||||||| overlap : 47971776
+gcc  -Wall -Wextra -Werror -g -o my-test tests/my-test.c ./objs/*.o -I ./includes -L ./srcs/libft -lft
+./my-test
+TINY MALLOC TEST
+TINY
+-------------NEW_PAGE--------------
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY
+TINY

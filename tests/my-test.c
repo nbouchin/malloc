@@ -19,25 +19,25 @@ int main()
 	ft_putendl("TINY MALLOC TEST");
 	while (i < 2000)
 	{
-		addr = (char*)ft_malloc(1);
+		addr = (char*)ft_malloc(50);
 		addr[0] = 42;
-		addr1 = (char*)ft_malloc(1);
+		addr1 = (char*)ft_malloc(50);
 		addr1[0] = 42;
-		addr2 = (char*)ft_malloc(1);
+		addr2 = (char*)ft_malloc(50);
 		addr2[0] = 42;
-		addr3 = (char*)ft_malloc(1);
+		addr3 = (char*)ft_malloc(50);
 		addr3[0] = 42;
-		addr4 = (char*)ft_malloc(1);
+		addr4 = (char*)ft_malloc(50);
 		addr4[0] = 42;
-		addr5 = (char*)ft_malloc(1);
+		addr5 = (char*)ft_malloc(50);
 		addr5[0] = 42;
-		addr6 = (char*)ft_malloc(1);
+		addr6 = (char*)ft_malloc(50);
 		addr6[0] = 42;
-		addr7 = (char*)ft_malloc(1);
+		addr7 = (char*)ft_malloc(50);
 		addr7[0] = 42;
-		addr8 = (char*)ft_malloc(1);
+		addr8 = (char*)ft_malloc(50);
 		addr8[0] = 42;
-		addr9 = (char*)ft_malloc(1);
+		addr9 = (char*)ft_malloc(50);
 		addr9[0] = 42;
 //		ft_free(addr);
 //		ft_free(addr3);
