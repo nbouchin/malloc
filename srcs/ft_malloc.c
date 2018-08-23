@@ -93,7 +93,7 @@ void	alloc_next_zone(t_page **page, size_t zone_size
 	(*page)->nxt->size = zone_size - sizeof(t_page);
 	(*page)->nxt->nxt = NULL;
 	(*p) = (t_block *)((*page)->nxt) + 1;
-	dprintf(2, "%p - %p\n", (*page)->nxt, (*p));
+	printf(2, "%p - %p\n", (*page)->nxt, (*p));
 	(*p)->is_free = 1;
 	(*p)->nxt = NULL;
 	(*p)->size = g_zone[malloc_type].page->size - sizeof(t_block *);
@@ -164,7 +164,7 @@ void	*malloc_core(size_t malloc_type, size_t alloc_size, size_t zone_size)
 	is_free_block = get_position(alloc_size, &page, malloc_type, &p);
 	if (!is_free_block)
 	{
-//		ft_putendl("NEW_PAGE");
+		ft_putendl("NEW_PAGE");
 		alloc_next_zone(&page, zone_size, &p, malloc_type);
 		if (malloc_type == 2 && !fzone)
 			g_zone[malloc_type].last = page->nxt;

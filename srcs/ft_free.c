@@ -57,7 +57,7 @@ void		delete_page(t_block *p, t_page **page, t_page **prev, int i)
 {
 	if ((p->size == (*page)->size - sizeof(t_block)) && (*page) == g_zone[i].page && i == 2)
 	{
-		ft_putendl("DELETE_PAGE");
+//		ft_putendl("DELETE_PAGE");
 		if ((*page)->nxt)
 			g_zone[2].page = (*page)->nxt;
 		else
@@ -70,7 +70,7 @@ void		delete_page(t_block *p, t_page **page, t_page **prev, int i)
 	}
 	else if ((p->size == (*page)->size - sizeof(t_block)) && (*page) != g_zone[i].page)
 	{
-		ft_putendl("DELETE_PAGE");
+//		ft_putendl("DELETE_PAGE");
 		if (i == 2 && (*page) == g_zone[2].last && (*prev))
 			g_zone[2].last = (*prev);
 		(*prev) ? (*prev)->nxt = NULL : 0;
@@ -156,8 +156,9 @@ void		ft_free(void *ptr)
 	if (ptr == 0)
 		return ;
 //	ft_putendl("FREE CALL");
-	tiny_small_free(ptr);
+//	tiny_small_free(ptr);
 //	large_free(ptr);
 	(void)ptr;
 	return ;
 }
+

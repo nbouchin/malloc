@@ -40,14 +40,14 @@ int main()
 		addr9 = (char*)ft_malloc(50);
 		addr9[0] = 42;
 //		ft_free(addr);
+//		ft_free(addr1);
+//		ft_free(addr2);
 //		ft_free(addr3);
 //		ft_free(addr4);
 //		ft_free(addr5);
-//		ft_free(addr8);
 //		ft_free(addr6);
-//		ft_free(addr1);
-//		ft_free(addr2);
 //		ft_free(addr7);
+//		ft_free(addr8);
 //		ft_free(addr9);
 		i++;
 	}
