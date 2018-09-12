@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:13:59 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/12 14:07:26 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/12 15:24:16 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,20 @@ void		defrag(t_block **p, void *ptr, int offset)
 //			ft_putendl("NODE_TO_FREE");
 			(*p)->is_free = 1;
 			(*p)->size = get_offset((*p)->size, offset);
-			if ((*p)->nxt && (*p)->nxt->is_free)
-			{
-//				ft_putendl("NEXT_IS_FREE");
-//				dprintf(1, "%p - %lu, %p - %lu\n", *p, (*p)->size, (*p)->nxt, (*p)->nxt->size);
-				(*p)->size += (*p)->nxt->size + sizeof(t_block) + get_offset((*p)->size, offset);
-				(*p)->nxt = (*p)->nxt->nxt;
-			}
-			if (prev && prev->is_free)
-			{
-//				ft_putendl("PREV_IS_FREE");
-				prev->size += (*p)->size + sizeof(t_block) + get_offset((*p)->size, offset);
-				prev->nxt = (*p)->nxt;
-				(*p) = prev;
-			}
+//			if ((*p)->nxt && (*p)->nxt->is_free)
+//			{
+////				ft_putendl("NEXT_IS_FREE");
+////				dprintf(1, "%p - %lu, %p - %lu\n", *p, (*p)->size, (*p)->nxt, (*p)->nxt->size);
+//				(*p)->size += (*p)->nxt->size + sizeof(t_block) + get_offset((*p)->size, offset);
+//				(*p)->nxt = (*p)->nxt->nxt;
+//			}
+//			if (prev && prev->is_free)
+//			{
+////				ft_putendl("PREV_IS_FREE");
+//				prev->size += (*p)->size + sizeof(t_block) + get_offset((*p)->size, offset);
+//				prev->nxt = (*p)->nxt;
+//				(*p) = prev;
+//			}
 			break ;
 		}
 		prev = (*p);

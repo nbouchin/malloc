@@ -27,7 +27,6 @@ t_page		*new_page(size_t page_size)
 
 	p = NULL;
 	page = NULL;
-	//	ft_putendl("NEW_PAGE");
 	page = mmap(NULL, page_size, PROT_WRITE | PROT_READ
 			, MAP_ANON | MAP_PRIVATE, -1, 0);
 	page->size = page_size - sizeof(t_page);
@@ -45,6 +44,7 @@ void	new_zone(size_t zone_size, int zone_type)
 {
 	if (!g_zone[zone_type].page)
 	{
+		//ft_putendl("NEW_ZONE");
 		if (zone_type == 0)
 			g_zone[zone_type].page = new_page(N);
 		else if (zone_type == 1)
@@ -60,21 +60,21 @@ void	new_zone(size_t zone_size, int zone_type)
  **	Run through pages block to get a free block.
  */
 
-t_block	*search_free_block(t_page *page, size_t alloc_size)
+t_block	*search_free_block(t_page **page, size_t alloc_size)
 {
 	t_block	*block;
 
 	block = NULL;
-	while (page)
+	while (*page)
 	{
-		block = (t_block *)((page) + 1);
+		block = (t_block *)((*page) + 1);
 		while (block)
 		{
 			if (block->is_free == 1 && block->size >= alloc_size)
 				return (block);
 			block = block->nxt;
 		}
-		page = page->nxt;
+		page = &(*page)->nxt;
 	}
 	return (NULL);
 }
@@ -126,7 +126,7 @@ void	relink_block(t_block *block, size_t alloc_size, size_t offset)
 void	*tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 {
 	t_block	*block;
-	t_page	*page;
+	t_page	**page;
 	size_t	offset;
 
 	block = NULL;
@@ -135,7 +135,7 @@ void	*tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 	if (alloc_size == 0)
 		alloc_size = 16;
 	new_zone(alloc_size, page_type);
-	page = g_zone[page_type].page;
+	page = &(g_zone[page_type].page);
 	offset = (alloc_type == TINY) ? 16 : 512;
 	block = search_free_block(page, get_offset(alloc_size, offset));
 	if (block)
@@ -143,9 +143,9 @@ void	*tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 	else
 	{
 		if (alloc_type == TINY)
-			page = new_page(N);
+			*page = new_page(N);
 		else
-			page = new_page(M);
+			*page = new_page(M);
 		block = search_free_block(page, get_offset(alloc_size, offset));
 		relink_block(block, alloc_size, alloc_type);
 	}
