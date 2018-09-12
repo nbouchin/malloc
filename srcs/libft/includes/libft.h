@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 15:14:24 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/07/26 11:13:07 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/12 11:25:48 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void				ft_qchar(char c);
 void				ft_qnbr(intmax_t nb);
 void				putbuf(void);
 int					ft_nblen(unsigned int x);
-char				*ft_realloc(char *buff, int size);
+char				*ft_false_realloc(char *buff, int size);
 char				**ft_tabcpy(char **array);
 char				*ft_charjoin(const char *str, char c);
 

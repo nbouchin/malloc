@@ -6,13 +6,13 @@
 /*   By: nbouchin <nbouchin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/20 13:03:50 by nbouchin          #+#    #+#             */
-/*   Updated: 2017/06/07 10:26:56 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/12 11:25:31 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_realloc(char *buff, int size)
+char	*ft_false_realloc(char *buff, int size)
 {
 	char	*swap;
 

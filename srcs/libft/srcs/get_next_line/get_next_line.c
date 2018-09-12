@@ -6,7 +6,7 @@
 /*   By: nbouchin <nbouchin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/02 11:16:49 by nbouchin          #+#    #+#             */
-/*   Updated: 2017/07/12 09:49:21 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/12 11:28:31 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ int			get_next_line(const int fd, char **line)
 		return (-1);
 	(sb) ? (buff = ft_strdup(sb)) :
 			(buff = ft_strnew(0));
-	buff = ft_realloc(buff, BUFF_SIZE);
+	buff = ft_false_realloc(buff, BUFF_SIZE);
 	while (!ft_strchr(buff, '\n'))
 	{
 		if (read(fd, buff + ft_strlen(buff), BUFF_SIZE) <= 0)
 			break ;
-		buff = ft_realloc(buff, BUFF_SIZE);
+		buff = ft_false_realloc(buff, BUFF_SIZE);
 	}
 	i = ft_strchr(buff, '\n') ? ft_strchr(buff, '\n') - buff : -1;
 	if (i < 0)
