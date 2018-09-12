@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/07/20 15:20:23 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/12 08:38:34 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ extern t_zone		g_zone[3];
 void				ft_free(void *ptr);
 void				*ft_malloc(size_t size);
 void				ft_test();
+size_t				get_offset(size_t alloc_size, int offset);
 //void				*ft_realloc(void *ptr, size_t size);
 
 #endif

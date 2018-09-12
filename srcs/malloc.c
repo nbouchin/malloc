@@ -25,7 +25,9 @@ t_page		*new_page(size_t page_size)
 	t_block	*p;
 	t_page	*page;
 
-	ft_putendl("NEW_PAGE");
+	p = NULL;
+	page = NULL;
+//	ft_putendl("NEW_PAGE");
 	page = mmap(NULL, page_size, PROT_WRITE | PROT_READ
 				, MAP_ANON | MAP_PRIVATE, -1, 0);
 	page->size = page_size - sizeof(t_page);
@@ -113,15 +115,6 @@ void	relink_block(t_block *block, size_t alloc_size, size_t offset)
 	{
 		old_size = block->size;
 		fill_block(block, (t_block *)((char *)(block + 1) + get_offset(alloc_size, offset)), alloc_size, 0);
-		if (old_size - (get_offset(block->size, offset) + sizeof(t_block)) > (size_t)N)
-		{
-			if (alloc_size <= TINY)
-			{
-				ft_putendl("DEBUT");
-				dprintf(1, "%lu - %lu\n", old_size, (get_offset(block->size, offset) + sizeof(t_block)));
-				ft_putendl("FIN");
-			}
-		}
 		fill_block(block->nxt, NULL, old_size - (get_offset(block->size, offset) + sizeof(t_block)), 1);
 	}
 }
@@ -136,6 +129,9 @@ void	*tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 	t_page	**page;
 	size_t	offset;
 
+	block = NULL;
+	page = NULL;
+	offset = 0;
 	new_zone(alloc_size, page_type);
 	page = &(g_zone[page_type].page);
 	offset = (alloc_type == TINY) ? 16 : 512;
@@ -154,6 +150,32 @@ void	*tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 	return (block + 1);
 }
 
+void	new_big_block(size_t zone_size, int zone_type)
+{
+		g_zone[zone_type].last->nxt= new_page(zone_size);
+		g_zone[zone_type].total_size = zone_size;
+		g_zone[zone_type].last = g_zone[zone_type].last->nxt;
+}
+
+/*
+**	Large allocation general runtime.
+*/
+
+void	*large_allocation(size_t alloc_size)
+{
+	t_block	*block;
+	t_page	**page;
+
+	block = NULL;
+	page = NULL;
+	if (!(g_zone[2].page))
+		new_zone(alloc_size, 2);
+	else
+		new_big_block(alloc_size, 2);
+	page = &(g_zone[2].last);
+	block = (t_block *)((*page) + 1);
+	return (block + 1);
+}
 /*
 **	Run allocation runtime according the allocation size request.
 */
@@ -174,7 +196,7 @@ void	*ft_malloc(size_t alloc_size)
 	else if (alloc_size >= LARGE)
 	{
 //		ft_putendl("LARGE");
-		return (0);
+		return (large_allocation(alloc_size));
 	}
 	else
 		return (0);

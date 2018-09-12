@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:13:59 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/08/16 16:14:00 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/12 09:27:57 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **	Memory free and defragmentation.
 */
 
-void		defrag(t_block **p, void *ptr)
+void		defrag(t_block **p, void *ptr, int offset)
 {
 	t_block		*prev;
 
@@ -27,18 +27,19 @@ void		defrag(t_block **p, void *ptr)
 	{
 		if ((t_block*)((*p) + 1) == (t_block*)ptr)
 		{
-//			ft_putendl("NODE_TO_FREE");
+			//ft_putendl("NODE_TO_FREE");
 			(*p)->is_free = 1;
 			if ((*p)->nxt && (*p)->nxt->is_free)
 			{
 //				ft_putendl("NEXT_IS_FREE");
-				(*p)->size += (*p)->nxt->size + sizeof(t_block);
+//				dprintf(1, "%lu, %lu\n", (*p)->size, (*p)->nxt->size);
+				(*p)->size += (*p)->nxt->size + sizeof(t_block) + get_offset((*p)->size, offset);
 				(*p)->nxt = (*p)->nxt->nxt;
 			}
 			if (prev && prev->is_free)
 			{
 //				ft_putendl("PREV_IS_FREE");
-				prev->size += (*p)->size + sizeof(t_block);
+				prev->size += (*p)->size + sizeof(t_block) + get_offset((*p)->size, offset);
 				prev->nxt = (*p)->nxt;
 				(*p) = prev;
 			}
@@ -128,24 +129,24 @@ void		tiny_small_free(void *ptr)
 		{
 			if (i == 0)
 			{
-				if ((char*)ptr >= (char*)page && (char*)ptr <= (char*)(page) + N)
+				if ((char*)ptr >= (char*)(page) && (char*)ptr <= (char*)(page) + N)
 				{
-					p = (t_block *)(page + 1);
-//					defrag(&p, ptr);
+					p = (t_block *)((page) + 1);
+					defrag(&p, ptr, 16);
 					delete_page(p, &page, &prev, i);
 				}
 			}
 			else if (i == 1)
 			{
-				if ((char*)ptr >= (char*)page && (char*)ptr <= (char*)(page) + M)
+				if ((char*)ptr >= (char*)(page) && (char*)ptr <= (char*)(page) + M)
 				{
-					p = (t_block *)(page + 1);
-//					defrag(&p, ptr);
+					p = (t_block *)((page) + 1);
+//					defrag(&p, ptr, 512);
 					delete_page(p, &page, &prev, i);
 				}
 			}
-			prev = page;
-			page = page->nxt;
+			prev = (page);
+			page = (page)->nxt;
 		}
 		i++;
 	}
@@ -156,8 +157,8 @@ void		ft_free(void *ptr)
 	if (ptr == 0)
 		return ;
 //	ft_putendl("FREE CALL");
-//	tiny_small_free(ptr);
-//	large_free(ptr);
+	tiny_small_free(ptr);
+	large_free(ptr);
 	(void)ptr;
 	return ;
 }
