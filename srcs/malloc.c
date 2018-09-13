@@ -185,17 +185,17 @@ void	*ft_malloc(size_t alloc_size)
 {
 	if (alloc_size <= TINY)
 	{
-				ft_putendl("TINY");
+//		ft_putendl("TINY");
 		return (tiny_small_allocation(alloc_size, 0, TINY));
 	}
 	else if (alloc_size <= SMALL)
 	{
-				ft_putendl("SMALL");
+//		ft_putendl("SMALL");
 		return (tiny_small_allocation(alloc_size, 1, SMALL));
 	}
 	else if (alloc_size >= LARGE)
 	{
-				ft_putendl("LARGE");
+//		ft_putendl("LARGE");
 		return (large_allocation(alloc_size));
 	}
 	else
