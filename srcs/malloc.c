@@ -51,7 +51,7 @@ void	new_zone(size_t zone_size, int zone_type)
 			g_zone[zone_type].page = new_page(M);
 		else if (zone_type == 2)
 			g_zone[zone_type].page = new_page(zone_size);
-		g_zone[zone_type].total_size = zone_size;
+		g_zone[zone_type].total_size = g_zone[zone_type].page->size + sizeof(t_page);
 		g_zone[zone_type].last = g_zone[zone_type].page;
 	}
 }
@@ -98,24 +98,22 @@ void	relink_block(t_block *block, size_t alloc_size, size_t offset)
 	size_t	old_size;
 
 	backup = NULL;
-	old_size = 0;
+	old_size = block->size;
 	if (block->nxt)
 	{
-		old_size = block->size;
 		backup = block->nxt;
 		if (block->size > alloc_size)
 		{
-			fill_block(block, (t_block *)((char *)(block + 1) + get_offset(alloc_size, offset)), get_offset(alloc_size, offset), 0);
-			fill_block(block->nxt, backup, get_offset(old_size, offset) - get_offset(alloc_size, offset) + sizeof(t_block), 1);
+			fill_block(block, (t_block *)((char *)(block + 1) + get_offset(alloc_size, offset)), alloc_size, 0);
+			fill_block(block->nxt, backup, old_size - (get_offset(block->size, offset)), 1);
 		}
 		else
 			fill_block(block, backup, alloc_size, 0);
 	}
 	else
 	{
-		old_size = block->size;
-		fill_block(block, (t_block *)((char *)(block + 1) + get_offset(alloc_size, offset)), get_offset(alloc_size, offset), 0);
-		fill_block(block->nxt, NULL, get_offset(old_size, offset) - (get_offset(alloc_size, offset) + sizeof(t_block)), 1);
+		fill_block(block, (t_block *)((char *)(block + 1) + get_offset(alloc_size, offset)), alloc_size, 0);
+		fill_block(block->nxt, NULL, old_size - (get_offset(block->size, offset) + sizeof(t_block)), 1);
 	}
 }
 
@@ -139,7 +137,7 @@ void	*tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 	offset = (alloc_type == TINY) ? 16 : 512;
 	block = search_free_block(page, get_offset(alloc_size, offset));
 	if (block)
-		relink_block(block, alloc_size, alloc_type);
+		relink_block(block, alloc_size, offset);
 	else
 	{
 		if (alloc_type == TINY)
@@ -147,7 +145,7 @@ void	*tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 		else
 			*page = new_page(M);
 		block = search_free_block(page, get_offset(alloc_size, offset));
-		relink_block(block, alloc_size, alloc_type);
+		relink_block(block, alloc_size, offset);
 	}
 	return (block + 1);
 }
@@ -160,8 +158,8 @@ void	new_big_block(size_t zone_size, int zone_type)
 }
 
 /*
- **	Large allocation general runtime.
- */
+**	Large allocation general runtime.
+*/
 
 void	*large_allocation(size_t alloc_size)
 {
@@ -180,25 +178,24 @@ void	*large_allocation(size_t alloc_size)
 }
 
 /*
- **	Run allocation runtime according the allocation size request.
- */
+**	Run allocation runtime according the allocation size request.
+*/
 
 void	*ft_malloc(size_t alloc_size)
 {
-	//	ft_putendl("ALLOCATION CALL");
 	if (alloc_size <= TINY)
 	{
-		//		ft_putendl("TINY");
+				ft_putendl("TINY");
 		return (tiny_small_allocation(alloc_size, 0, TINY));
 	}
 	else if (alloc_size <= SMALL)
 	{
-		//		ft_putendl("SMALL");
+				ft_putendl("SMALL");
 		return (tiny_small_allocation(alloc_size, 1, SMALL));
 	}
 	else if (alloc_size >= LARGE)
 	{
-		//		ft_putendl("LARGE");
+				ft_putendl("LARGE");
 		return (large_allocation(alloc_size));
 	}
 	else
