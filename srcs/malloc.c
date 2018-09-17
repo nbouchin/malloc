@@ -20,15 +20,15 @@ void fill_block(t_block *p, t_block *next, size_t block_size, int state)
 
 t_page *new_page(size_t page_size)
 {
-	t_block *p;
-	t_page * page;
+	t_block	*p;
+	t_page	*page;
 
 	p = NULL;
 	page = NULL;
 	page = mmap(NULL, page_size, PROT_WRITE | PROT_READ, MAP_ANON | MAP_PRIVATE, -1, 0);
 	page->size = page_size - sizeof(t_page);
 	page->nxt = NULL;
-	p = (t_block *) (page + 1);
+	p = (t_block *)(page + 1);
 	fill_block(p, NULL, page->size - sizeof(t_block), 1);
 	return (page);
 }
@@ -59,19 +59,19 @@ void new_zone(size_t zone_size, int zone_type)
 
 t_block *search_free_block(t_page **page, size_t alloc_size)
 {
-	t_block *block;
+	t_block	*block;
 
 	block = NULL;
 	while (*page)
 	{
-		block = (t_block *) ((*page) + 1);
+		block = (t_block *)((*page) + 1);
 		while (block)
 		{
-			if (block->is_free == 1 && block->size >= alloc_size)
+			if (block->is_free == 1 && block->size >= alloc_size + sizeof(t_block))
 				return (block);
 			block = block->nxt;
 		}
-		page = &(*page)->nxt;
+		*page = (*page)->nxt;
 	}
 	return (NULL);
 }
@@ -91,8 +91,8 @@ size_t get_offset(size_t alloc_size, int offset)
 
 void relink_block(t_block *block, size_t alloc_size, size_t offset)
 {
-	t_block *backup;
-	size_t   old_size;
+	t_block	*backup;
+	size_t	old_size;
 
 	backup = NULL;
 	old_size = block->size;
@@ -101,7 +101,7 @@ void relink_block(t_block *block, size_t alloc_size, size_t offset)
 		backup = block->nxt;
 		if (block->size > alloc_size)
 		{
-			fill_block(block, (t_block *) ((char *) (block + 1) + get_offset(alloc_size, offset)), alloc_size, 0);
+			fill_block(block, (t_block *)((char *)(block + 1) + get_offset(alloc_size, offset)), alloc_size, 0);
 			fill_block(block->nxt, backup, old_size - (get_offset(block->size, offset)), 1);
 		}
 		else
@@ -109,7 +109,7 @@ void relink_block(t_block *block, size_t alloc_size, size_t offset)
 	}
 	else
 	{
-		fill_block(block, (t_block *) ((char *) (block + 1) + get_offset(alloc_size, offset)), alloc_size, 0);
+		fill_block(block, (t_block *)((char *)(block + 1) + get_offset(alloc_size, offset)), alloc_size, 0);
 		fill_block(block->nxt, NULL, old_size - (get_offset(block->size, offset) + sizeof(t_block)), 1);
 	}
 }
@@ -120,28 +120,27 @@ void relink_block(t_block *block, size_t alloc_size, size_t offset)
 
 void *tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 {
-	t_block *block;
-	t_page **page;
-	size_t   offset;
+	t_block	*block;
+	size_t	offset;
+	t_page	*page;
 
 	block = NULL;
-	page = NULL;
 	offset = 0;
 	if (alloc_size == 0)
 		alloc_size = 16;
 	new_zone(alloc_size, page_type);
-	page = &(g_zone[page_type].page);
+	page = g_zone[page_type].page;
 	offset = (alloc_type == TINY) ? 16 : 512;
-	block = search_free_block(page, get_offset(alloc_size, offset));
+	block = search_free_block(&page, get_offset(alloc_size, offset));
 	if (block)
 		relink_block(block, alloc_size, offset);
 	else
 	{
 		if (alloc_type == TINY)
-			*page = new_page(N);
+			page = new_page(N);
 		else
-			*page = new_page(M);
-		block = search_free_block(page, get_offset(alloc_size, offset));
+			page = new_page(M);
+		block = search_free_block(&page, get_offset(alloc_size, offset));
 		relink_block(block, alloc_size, offset);
 	}
 	return (block + 1);
@@ -160,8 +159,8 @@ void new_big_block(size_t zone_size, int zone_type)
 
 void *large_allocation(size_t alloc_size)
 {
-	t_block *block;
-	t_page **page;
+	t_block	*block;
+	t_page	**page;
 
 	block = NULL;
 	page = NULL;

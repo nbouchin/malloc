@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 09:13:59 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/13 09:27:40 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/17 12:15:22 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void		tiny_small_free(void *ptr)
 				if ((char*)ptr >= (char*)(page) && (char*)ptr <= (char*)(page) + N)
 				{
 					p = (t_block *)((page) + 1);
-					defrag(&p, ptr, 16);
+					//defrag(&p, ptr, 16);
 					delete_page(p, &page, &prev, i);
 				}
 			}
@@ -142,7 +142,7 @@ void		tiny_small_free(void *ptr)
 				if ((char*)ptr >= (char*)(page) && (char*)ptr <= (char*)(page) + M)
 				{
 					p = (t_block *)((page) + 1);
-					defrag(&p, ptr, 512);
+					//defrag(&p, ptr, 512);
 					delete_page(p, &page, &prev, i);
 				}
 			}
@@ -157,6 +157,7 @@ void		ft_free(void *ptr)
 {
 	if (ptr == 0)
 		return ;
+//	ft_putendl("SALUT");
 //	ft_putendl("FREE CALL");
 //	tiny_small_free(ptr);
 //	large_free(ptr);

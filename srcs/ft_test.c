@@ -24,7 +24,7 @@ void		ft_test()
 			if (i == 2)
 				dprintf(1, "LARGE : %p\n", page);
 			p = (t_block *)(page + 1);
-			while (p->nxt)
+			while (p)
 			{
 				total += p->size;
 				if (p->is_free)
