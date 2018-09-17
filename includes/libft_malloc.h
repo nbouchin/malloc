@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/17 13:39:10 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/17 16:03:48 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,11 @@
 # define	TINY		992
 # define	SMALL		127000
 # define	LARGE		127000
-# define	N			2 * getpagesize()
-# define	M			4 * getpagesize()
+//# define	N			2 * getpagesize()
+//# define	M			4 * getpagesize()
 
-//# define	N			488  * getpagesize()
-//# define	M			3906 * getpagesize()
+# define	N			488  * getpagesize()
+# define	M			3906 * getpagesize()
 typedef struct		s_block
 {
 	char			is_free;

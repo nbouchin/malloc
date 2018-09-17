@@ -60,10 +60,12 @@ void new_zone(size_t zone_size, int zone_type)
 t_block *search_free_block(t_page **page, size_t alloc_size)
 {
 	t_block	*block;
+	t_page	*prev;
 
 	block = NULL;
 	while (*page)
 	{
+		prev = *page;
 		block = (t_block *)((*page) + 1);
 		while (block)
 		{
@@ -73,6 +75,7 @@ t_block *search_free_block(t_page **page, size_t alloc_size)
 		}
 		*page = (*page)->nxt;
 	}
+	*page = prev;
 	return (NULL);
 }
 
@@ -137,10 +140,10 @@ void *tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 	else
 	{
 		if (alloc_type == TINY)
-			page = new_page(N);
+			page->nxt = new_page(N);
 		else
-			page = new_page(M);
-		block = search_free_block(&page, get_offset(alloc_size, offset));
+			page->nxt = new_page(M);
+		block = search_free_block(&page->nxt, get_offset(alloc_size, offset));
 		relink_block(block, alloc_size, offset);
 	}
 	return (block + 1);
