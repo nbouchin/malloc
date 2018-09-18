@@ -6,7 +6,7 @@
 #    By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/27 13:56:26 by nbouchin          #+#    #+#              #
-#    Updated: 2018/09/12 11:31:11 by nbouchin         ###   ########.fr        #
+#    Updated: 2018/09/18 17:50:31 by nbouchin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ OBJS	= $(addprefix $(OBJDIR), $(SRC:.c=.o))
 
 
 $(OBJDIR)%.o: $(SRCDIR)%.c $(HEADER)libft_malloc.h
-	$(CC) -o $@ -c $< $(FLAGS) -I $(HEADER)
+	$(CC) -fPIC -o $@ -c $< $(FLAGS) -I $(HEADER)
 
 all: $(OBJDIR) $(NAME)
 

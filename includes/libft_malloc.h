@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/17 16:03:48 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:45:23 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # define _GNU_SOURCE
 
 # include <unistd.h>
+# include <stdint.h>
 # include <pthread.h>
 # include <sys/mman.h>
 # include <sys/resource.h>

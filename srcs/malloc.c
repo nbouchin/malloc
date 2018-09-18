@@ -87,7 +87,7 @@ void new_zone(size_t zone_size, int zone_type)
  **	Run through pages block to get a free block.
  */
 
-t_block *search_free_block(t_page **page, size_t alloc_size)
+t_block *search_free_block(t_page **page, size_t alloc_size, int offset)
 {
 	t_block	*block;
 	t_page	*prev;
@@ -100,7 +100,7 @@ t_block *search_free_block(t_page **page, size_t alloc_size)
 		block = (t_block *)((*page) + 1);
 		while (block)
 		{
-			if (block->is_free == 1 && block->size >= alloc_size + sizeof(t_block) + 512)
+			if ((block->is_free && block->size >= alloc_size + sizeof(t_block) + offset) || (block->is_free && block->size == alloc_size))
 				return (block);
 			block = block->nxt;
 		}
@@ -172,7 +172,7 @@ void *tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 	new_zone(alloc_size, page_type);
 	page = g_zone[page_type].page;
 	offset = (alloc_type == TINY) ? 16 : 512;
-	block = search_free_block(&page, get_offset(alloc_size, offset));
+	block = search_free_block(&page, get_offset(alloc_size, offset), offset);
 	if (block)
 		relink_block(block, alloc_size, offset);
 	else
@@ -181,7 +181,7 @@ void *tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 			page->nxt = new_page(N);
 		else
 			page->nxt = new_page(M);
-		block = search_free_block(&page->nxt, get_offset(alloc_size, offset));
+		block = search_free_block(&page->nxt, get_offset(alloc_size, offset), offset);
 		relink_block(block, alloc_size, offset);
 	}
 	return (block + 1);
