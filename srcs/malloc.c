@@ -4,8 +4,37 @@
 t_zone g_zone[3] = {{0, NULL, NULL}, {0, NULL, NULL}, {0, NULL, NULL}};
 
 /*
-**	Fill a block informations and set his status.
-*/
+ **	Fill a block informations and set his status.
+ */
+
+
+void				print_addr_fd(void *addr, int fd)
+{
+	const char	*digits = "0123456789abcdef";
+	size_t		nb;
+	char		buffer[100];
+	size_t		len;
+
+	len = 0;
+	nb = (size_t)addr;
+	ft_bzero(buffer, sizeof(buffer));
+	ft_putstr_fd("0x", fd);
+	if (nb == 0)
+		ft_putchar_fd('0', fd);
+	while (nb > 0)
+	{
+		buffer[len++] = digits[(size_t)nb % 16];
+		nb /= 16;
+	}
+	ft_strrev(buffer);
+	ft_putstr_fd(buffer, fd);
+}
+
+void				print_addr(void *addr)
+{
+	print_addr_fd(addr, 1);
+}
+
 
 void fill_block(t_block *p, t_block *next, size_t block_size, int state)
 {
@@ -25,6 +54,8 @@ t_page *new_page(size_t page_size)
 
 	p = NULL;
 	page = NULL;
+	p = NULL;
+	page = NULL;
 	page = mmap(NULL, page_size, PROT_WRITE | PROT_READ, MAP_ANON | MAP_PRIVATE, -1, 0);
 	page->size = page_size - sizeof(t_page);
 	page->nxt = NULL;
@@ -34,14 +65,13 @@ t_page *new_page(size_t page_size)
 }
 
 /*
-**	Create a new memory zone according to the asked zone type.
-*/
+ **	Create a new memory zone according to the asked zone type.
+ */
 
 void new_zone(size_t zone_size, int zone_type)
 {
 	if (!g_zone[zone_type].page)
 	{
-		// ft_putendl("NEW_ZONE");
 		if (zone_type == 0)
 			g_zone[zone_type].page = new_page(N);
 		else if (zone_type == 1)
@@ -54,8 +84,8 @@ void new_zone(size_t zone_size, int zone_type)
 }
 
 /*
-**	Run through pages block to get a free block.
-*/
+ **	Run through pages block to get a free block.
+ */
 
 t_block *search_free_block(t_page **page, size_t alloc_size)
 {
@@ -63,13 +93,14 @@ t_block *search_free_block(t_page **page, size_t alloc_size)
 	t_page	*prev;
 
 	block = NULL;
+	prev = NULL;
 	while (*page)
 	{
 		prev = *page;
 		block = (t_block *)((*page) + 1);
 		while (block)
 		{
-			if (block->is_free == 1 && block->size >= alloc_size + sizeof(t_block))
+			if (block->is_free == 1 && block->size >= alloc_size + sizeof(t_block) + 512)
 				return (block);
 			block = block->nxt;
 		}
@@ -98,22 +129,28 @@ void relink_block(t_block *block, size_t alloc_size, size_t offset)
 	size_t	old_size;
 
 	backup = NULL;
+	old_size = 0;
 	old_size = block->size;
 	if (block->nxt)
 	{
 		backup = block->nxt;
-		if (block->size > alloc_size)
+		if (block->size > get_offset(alloc_size, offset))
 		{
 			fill_block(block, (t_block *)((char *)(block + 1) + get_offset(alloc_size, offset)), alloc_size, 0);
 			fill_block(block->nxt, backup, old_size - (get_offset(block->size, offset)), 1);
 		}
-		else
-			fill_block(block, backup, alloc_size, 0);
+		else if (block->size == get_offset(alloc_size, offset))
+			block->is_free = 0;
 	}
 	else
 	{
-		fill_block(block, (t_block *)((char *)(block + 1) + get_offset(alloc_size, offset)), alloc_size, 0);
-		fill_block(block->nxt, NULL, old_size - (get_offset(block->size, offset) + sizeof(t_block)), 1);
+		if (block->size > get_offset(alloc_size, offset))
+		{
+			fill_block(block, (t_block *)((char *)(block + 1) + get_offset(alloc_size, offset)), alloc_size, 0);
+			fill_block(block->nxt, NULL, old_size - (get_offset(block->size, offset) + sizeof(t_block)), 1);
+		}
+		else if (block->size == get_offset(alloc_size, offset))
+			block->is_free = 0;
 	}
 }
 
@@ -127,9 +164,10 @@ void *tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 	size_t	offset;
 	t_page	*page;
 
+	page = NULL;
 	block = NULL;
 	offset = 0;
-	if (alloc_size == 0)
+	if (alloc_size < 16)
 		alloc_size = 16;
 	new_zone(alloc_size, page_type);
 	page = g_zone[page_type].page;
@@ -157,8 +195,8 @@ void new_big_block(size_t zone_size, int zone_type)
 }
 
 /*
-**	Large allocation general runtime.
-*/
+ **	Large allocation general runtime.
+ */
 
 void *large_allocation(size_t alloc_size)
 {
@@ -177,26 +215,17 @@ void *large_allocation(size_t alloc_size)
 }
 
 /*
-**	Run allocation runtime according the allocation size request.
-*/
+ **	Run allocation runtime according the allocation size request.
+ */
 
 void *ft_malloc(size_t alloc_size)
 {
 	if (alloc_size <= TINY)
-	{
-		//		ft_putendl("TINY");
 		return (tiny_small_allocation(alloc_size, 0, TINY));
-	}
 	else if (alloc_size <= SMALL)
-	{
-		//		ft_putendl("SMALL");
 		return (tiny_small_allocation(alloc_size, 1, SMALL));
-	}
 	else if (alloc_size >= LARGE)
-	{
-		//		ft_putendl("LARGE");
 		return (large_allocation(alloc_size));
-	}
 	else
 		return (0);
 }

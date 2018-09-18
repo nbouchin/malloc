@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_free.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/13 09:13:59 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/17 16:45:56 by nbouchin         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/libft_malloc.h"
 #include <stdio.h>
 
@@ -24,28 +12,23 @@ void		defrag(t_block **p, void *ptr, int offset)
 	prev = NULL;
 	while ((*p))
 	{
-		if ((t_block*)((*p) + 1) == (t_block*)ptr)
+		if ((t_block*)((*p)) == (t_block*)ptr - 1)
 		{
-//			ft_putendl("NODE_TO_FREE");
+			(void)offset;
 			(*p)->is_free = 1;
 			(*p)->size = get_offset((*p)->size, offset);
-			if ((*p)->nxt && (*p)->nxt->is_free)
-			{
-//				ft_putendl("NEXT_IS_FREE");
-//				dprintf(1, "%p - %lu, %p - %lu\n", *p, (*p)->size, (*p)->nxt, (*p)->nxt->size);
-				(*p)->size += (*p)->nxt->size + sizeof(t_block) + get_offset((*p)->size, offset);
-				(*p)->nxt = (*p)->nxt->nxt;
-			}
-			if (prev && prev->is_free)
-			{
-//				ft_putendl("PREV_IS_FREE");
-				prev->size += (*p)->size + sizeof(t_block) + get_offset((*p)->size, offset);
-				prev->nxt = (*p)->nxt;
-				(*p) = prev;
-			}
+			//if ((*p)->nxt && (*p)->nxt->is_free)
+			//{
+			//	(*p)->size += (*p)->nxt->size + sizeof(t_block);
+			//	(*p)->nxt = (*p)->nxt->nxt;
+			//}
+			//if (prev && prev->is_free)
+			//{
+			//	prev->size += (*p)->size + sizeof(t_block);
+			//	prev->nxt = (*p)->nxt;
+			//}
 			return ;
 		}
-//		ft_putendl("BLOCK->NXT");
 		prev = (*p);
 		(*p) = (*p)->nxt;
 	}
@@ -57,11 +40,12 @@ void		defrag(t_block **p, void *ptr, int offset)
 
 void		delete_page(t_block *p, t_page **page, t_page **prev, int i)
 {
-	if ((p->size == (*page)->size - sizeof(t_block)) && (*page) == g_zone[i].page && i == 2)
+	if ((p->size == (*page)->size - sizeof(t_block)) && i == 2)
 	{
-//		ft_putendl("DELETE_PAGE");
-		if ((*page)->nxt)
+		if (!(*prev) && (*page)->nxt)
 			g_zone[2].page = (*page)->nxt;
+		else if ((*prev) && (*page)->nxt)
+			(*prev)->nxt = (*page)->nxt;
 		else
 		{
 			g_zone[2].total_size = 0; 
@@ -70,13 +54,19 @@ void		delete_page(t_block *p, t_page **page, t_page **prev, int i)
 		}
 		munmap((*page), (*page)->size + sizeof(t_page));
 	}
-	else if ((p->size == (*page)->size - sizeof(t_block)) && (*page) != g_zone[i].page)
+	else if (p->size == (*page)->size - sizeof(t_block))
 	{
-//		ft_putendl("DELETE_PAGE");
-		if (i == 2 && (*page) == g_zone[2].last && (*prev))
-			g_zone[2].last = (*prev);
-		(*prev) ? (*prev)->nxt = NULL : 0;
-		((*prev) && (*page)->nxt) ? (*prev)->nxt = (*page)->nxt : 0;
+		if (!(*prev) && (*page)->nxt)	
+			g_zone[i].page = (*page)->nxt;			
+		else if ((*prev) && (*page)->nxt)
+			(*prev)->nxt = (*page)->nxt;
+		else
+		{
+			g_zone[i].total_size = 0; 
+			g_zone[i].last = NULL;
+			g_zone[i].page = NULL;
+			return ;
+		}
 		munmap((*page), (*page)->size + sizeof(t_page));
 	}
 }
@@ -91,8 +81,10 @@ void		large_free(void *ptr)
 	t_page		*page;
 	t_page		*prev;
 
+	page = NULL;
+	prev = NULL;
+	p = NULL; 
 	page = g_zone[2].page;
-	p = (t_block *)(page + 1);
 	while (page)
 	{
 		if (((t_block *)(page + 1) + 1) == ptr)
@@ -123,7 +115,6 @@ void		tiny_small_free(void *ptr)
 	prev = NULL;
 	while (i <= 1)
 	{
-//		ft_putendl("TYPE->NXT");
 		page = g_zone[i].page;
 		while (page)
 		{
@@ -134,6 +125,7 @@ void		tiny_small_free(void *ptr)
 					p = (t_block *)((page) + 1);
 					defrag(&p, ptr, 16);
 					delete_page(p, &page, &prev, i);
+					return ;
 				}
 			}
 			else if (i == 1)
@@ -143,9 +135,9 @@ void		tiny_small_free(void *ptr)
 					p = (t_block *)((page) + 1);
 					defrag(&p, ptr, 512);
 					delete_page(p, &page, &prev, i);
+					return ;
 				}
 			}
-//			ft_putendl("PAGE->NXT");
 			prev = (page);
 			page = page->nxt;
 		}
@@ -157,7 +149,6 @@ void		ft_free(void *ptr)
 {
 	if (ptr == 0)
 		return ;
-//	ft_putendl("FREE CALL");
 	tiny_small_free(ptr);
 	large_free(ptr);
 	(void)ptr;
