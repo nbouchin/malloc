@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/19 10:17:49 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/19 17:18:17 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@
 # define	TINY		992
 # define	SMALL		127000
 # define	LARGE		127000
-//# define	N			2 * getpagesize()
-//# define	M			4 * getpagesize()
 
 # define	N			488  * getpagesize()
 # define	M			3906 * getpagesize()
@@ -87,6 +85,7 @@ void				*malloc(size_t size);
 void				*calloc(size_t count, size_t size);
 void				*realloc(void *ptr, size_t size);
 void				ft_test();
+void				fill_block(t_block *p, t_block *next, size_t block_size, int state);
 size_t				get_offset(size_t alloc_size, int offset);
 
 #endif
