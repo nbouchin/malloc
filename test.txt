@@ -1,153 +1,563 @@
-:NEW_TINY
-1998784, 64, 1
-:1998720, 64, 1
-:1998656, 96, 1
-:1998560, 96, 1
-:1998464, 96, 1
-:1998368, 96, 1
-:1998272, 96, 1
-:1998176, 64, 1
-:1998112, 96, 1
-:1998016, 96, 1
-:1997920, 96, 1
-:1997824, 96, 1
-:1997728, 96, 1
-:1997632, 96, 1
-:1997536, 96, 1
-:1997440, 96, 1
-:1997344, 96, 1
-:1997248, 96, 1
-:1997152, 96, 1
-:1997056, 96, 1
-:1996960, 96, 1
-:1996864, 96, 1
-:1996768, 96, 1
-:1996672, 96, 1
-:1996576, 96, 1
-:1996480, 96, 1
-:1996384, 96, 1
-:1996288, 96, 1
-:1996192, 96, 1
-:1996096, 96, 1
-:1996000, 96, 1
-:1995904, 96, 1
-:1995808, 96, 1
-:1995712, 96, 1
-:1995616, 96, 1
-:1995520, 96, 1
-:1995424, 96, 1
-:1995328, 96, 1
-:1995232, 96, 1
-:1995136, 96, 1
-:1995040, 96, 1
-:1994944, 96, 1
-:1994848, 96, 1
-:1994752, 96, 1
-:1994656, 96, 1
-:1994560, 96, 1
-:1994464, 96, 1
-:1994368, 96, 1
-:1994272, 96, 1
-:1994176, 96, 1
-:1994080, 96, 1
-:1993984, 96, 1
-:1993888, 96, 1
-:1993792, 96, 1
-:1993696, 96, 1
-:1993600, 96, 1
-:1993504, 96, 1
-:1993408, 96, 1
-:1993312, 96, 1
-:1993216, 96, 1
-:1993120, 96, 1
-:1993024, 96, 1
-:1992928, 96, 1
-:1992832, 96, 1
-:1992736, 96, 1
-:1992640, 96, 1
-:1992544, 96, 1
-:1992448, 96, 1
-:1992352, 96, 1
-:1992256, 96, 1
-:1992160, 96, 1
-:1992064, 96, 1
-:1991968, 96, 1
-:1991872, 96, 1
-:1991776, 96, 1
-:1991680, 96, 1
-:1991584, 96, 1
-:1991488, 96, 1
-:1991392, 96, 1
-:1991296, 96, 1
-:1991200, 96, 1
-:1991104, 96, 1
-:1991008, 96, 1
-:1990912, 96, 1
-:1990816, 96, 1
-:1990720, 96, 1
-:1990624, 96, 1
-:1990528, 96, 1
-:1990432, 96, 1
-:1990336, 96, 1
-:1990240, 96, 1
-:1990144, 96, 1
-:1990048, 96, 1
-:1989952, 96, 1
-:1989856, 96, 1
-:1989760, 96, 1
-:1989664, 96, 1
-:1989568, 96, 1
-:1989472, 96, 1
-:1989376, 96, 1
-:1989280, 96, 1
-:1989184, 96, 1
-:1989088, 96, 1
-:1988992, 96, 1
-:1988896, 96, 1
-:1988800, 96, 1
-:1988704, 96, 1
-:1988608, 96, 1
-:1988512, 96, 1
-:1988416, 96, 1
-:1988320, 96, 1
-:1988224, 80, 1
-:1988144, 96, 1
-:1988048, 96, 1
-:1987952, 208, 1
-:1987744, 48, 1
-:1987696, 80, 1
-:1987616, 80, 1
-:1987536, 128, 1
-:1987408, 80, 1
-:1987328, 80, 1
-:1987248, 96, 1
-:1987152, 80, 1
-:1987072, 80, 1
-:1986992, 48, 1
-:1986944, 80, 1
-:1986864, 96, 1
-:1986768, 96, 1
-:1986672, 80, 1
-:1986592, 112, 1
-:1986480, 96, 1
-:1986384, 80, 1
-:1986304, 96, 1
-:1986208, 48, 1
-:1986160, 80, 1
-:1986080, 80, 1
-:1986000, 64, 1
-:1985936, 208, 1
-:1985728, 144, 1
-:1985584, 48, 1
-:1985536, 96, 1
-:1985440, 48, 1
-:1985392, 160, 1
-:1985232, 288, 1
-15998912, 4128, 1
-15994784, 2592, 1
-15992192, 3616, 1
-15988576, 4128, 1
-15984448, 91680, 1
-:1984944, 224, 1
-:1984720, 80, 1
-:
+ alloc size : 32
+ block size : 1998784
+
+ alloc size : 32
+ block size : 1998720
+
+ alloc size : 64
+ block size : 1998656
+
+ alloc size : 64
+ block size : 1998560
+
+ alloc size : 64
+ block size : 1998464
+
+ alloc size : 64
+ block size : 1998368
+
+ alloc size : 64
+ block size : 1998272
+
+ alloc size : 32
+ block size : 1998176
+
+ alloc size : 64
+ block size : 1998112
+
+ alloc size : 64
+ block size : 1998016
+
+ alloc size : 64
+ block size : 1997920
+
+ alloc size : 64
+ block size : 1997824
+
+ alloc size : 64
+ block size : 1997728
+
+ alloc size : 64
+ block size : 1997632
+
+ alloc size : 64
+ block size : 1997536
+
+ alloc size : 64
+ block size : 1997440
+
+ alloc size : 64
+ block size : 1997344
+
+ alloc size : 64
+ block size : 1997248
+
+ alloc size : 64
+ block size : 1997152
+
+ alloc size : 64
+ block size : 1997056
+
+ alloc size : 64
+ block size : 1996960
+
+ alloc size : 64
+ block size : 1996864
+
+ alloc size : 64
+ block size : 1996768
+
+ alloc size : 64
+ block size : 1996672
+
+ alloc size : 64
+ block size : 1996576
+
+ alloc size : 64
+ block size : 1996480
+
+ alloc size : 64
+ block size : 1996384
+
+ alloc size : 64
+ block size : 1996288
+
+ alloc size : 64
+ block size : 1996192
+
+ alloc size : 64
+ block size : 1996096
+
+ alloc size : 64
+ block size : 1996000
+
+ alloc size : 64
+ block size : 1995904
+
+ alloc size : 64
+ block size : 1995808
+
+ alloc size : 64
+ block size : 1995712
+
+ alloc size : 64
+ block size : 1995616
+
+ alloc size : 64
+ block size : 1995520
+
+ alloc size : 64
+ block size : 1995424
+
+ alloc size : 64
+ block size : 1995328
+
+ alloc size : 64
+ block size : 1995232
+
+ alloc size : 64
+ block size : 1995136
+
+ alloc size : 64
+ block size : 1995040
+
+ alloc size : 64
+ block size : 1994944
+
+ alloc size : 64
+ block size : 1994848
+
+ alloc size : 64
+ block size : 1994752
+
+ alloc size : 64
+ block size : 1994656
+
+ alloc size : 64
+ block size : 1994560
+
+ alloc size : 64
+ block size : 1994464
+
+ alloc size : 64
+ block size : 1994368
+
+ alloc size : 64
+ block size : 1994272
+
+ alloc size : 64
+ block size : 1994176
+
+ alloc size : 64
+ block size : 1994080
+
+ alloc size : 64
+ block size : 1993984
+
+ alloc size : 64
+ block size : 1993888
+
+ alloc size : 64
+ block size : 1993792
+
+ alloc size : 64
+ block size : 1993696
+
+ alloc size : 64
+ block size : 1993600
+
+ alloc size : 64
+ block size : 1993504
+
+ alloc size : 64
+ block size : 1993408
+
+ alloc size : 64
+ block size : 1993312
+
+ alloc size : 64
+ block size : 1993216
+
+ alloc size : 64
+ block size : 1993120
+
+ alloc size : 64
+ block size : 1993024
+
+ alloc size : 64
+ block size : 1992928
+
+ alloc size : 64
+ block size : 1992832
+
+ alloc size : 64
+ block size : 1992736
+
+ alloc size : 64
+ block size : 1992640
+
+ alloc size : 64
+ block size : 1992544
+
+ alloc size : 64
+ block size : 1992448
+
+ alloc size : 64
+ block size : 1992352
+
+ alloc size : 64
+ block size : 1992256
+
+ alloc size : 64
+ block size : 1992160
+
+ alloc size : 64
+ block size : 1992064
+
+ alloc size : 64
+ block size : 1991968
+
+ alloc size : 64
+ block size : 1991872
+
+ alloc size : 64
+ block size : 1991776
+
+ alloc size : 64
+ block size : 1991680
+
+ alloc size : 64
+ block size : 1991584
+
+ alloc size : 64
+ block size : 1991488
+
+ alloc size : 64
+ block size : 1991392
+
+ alloc size : 64
+ block size : 1991296
+
+ alloc size : 64
+ block size : 1991200
+
+ alloc size : 64
+ block size : 1991104
+
+ alloc size : 64
+ block size : 1991008
+
+ alloc size : 64
+ block size : 1990912
+
+ alloc size : 64
+ block size : 1990816
+
+ alloc size : 64
+ block size : 1990720
+
+ alloc size : 64
+ block size : 1990624
+
+ alloc size : 64
+ block size : 1990528
+
+ alloc size : 64
+ block size : 1990432
+
+ alloc size : 64
+ block size : 1990336
+
+ alloc size : 64
+ block size : 1990240
+
+ alloc size : 64
+ block size : 1990144
+
+ alloc size : 64
+ block size : 1990048
+
+ alloc size : 64
+ block size : 1989952
+
+ alloc size : 64
+ block size : 1989856
+
+ alloc size : 64
+ block size : 1989760
+
+ alloc size : 64
+ block size : 1989664
+
+ alloc size : 64
+ block size : 1989568
+
+ alloc size : 64
+ block size : 1989472
+
+ alloc size : 64
+ block size : 1989376
+
+ alloc size : 64
+ block size : 1989280
+
+ alloc size : 64
+ block size : 1989184
+
+ alloc size : 64
+ block size : 1989088
+
+ alloc size : 64
+ block size : 1988992
+
+ alloc size : 64
+ block size : 1988896
+
+ alloc size : 64
+ block size : 1988800
+
+ alloc size : 64
+ block size : 1988704
+
+ alloc size : 64
+ block size : 1988608
+
+ alloc size : 64
+ block size : 1988512
+
+ alloc size : 64
+ block size : 1988416
+
+ alloc size : 64
+ block size : 1988320
+
+ alloc size : 48
+ block size : 1988224
+
+ alloc size : 64
+ block size : 1988144
+
+ alloc size : 64
+ block size : 1988048
+
+ alloc size : 176
+ block size : 1987952
+
+ alloc size : 16
+ block size : 1987744
+
+ alloc size : 48
+ block size : 1987696
+
+ alloc size : 48
+ block size : 1987616
+
+ alloc size : 96
+ block size : 1987536
+
+ alloc size : 48
+ block size : 1987408
+
+ alloc size : 48
+ block size : 1987328
+
+ alloc size : 64
+ block size : 1987248
+
+ alloc size : 48
+ block size : 1987152
+
+ alloc size : 48
+ block size : 1987072
+
+ alloc size : 16
+ block size : 1986992
+
+ alloc size : 48
+ block size : 1986944
+
+ alloc size : 64
+ block size : 1986864
+
+ alloc size : 64
+ block size : 1986768
+
+ alloc size : 48
+ block size : 1986672
+
+ alloc size : 80
+ block size : 1986592
+
+ alloc size : 64
+ block size : 1986480
+
+ alloc size : 48
+ block size : 1986384
+
+ alloc size : 64
+ block size : 1986304
+
+ alloc size : 16
+ block size : 1986208
+
+ alloc size : 48
+ block size : 1986160
+
+ alloc size : 48
+ block size : 1986080
+
+ alloc size : 32
+ block size : 1986000
+
+ alloc size : 176
+ block size : 1985936
+
+ alloc size : 112
+ block size : 1985728
+
+ alloc size : 16
+ block size : 1985584
+
+ alloc size : 64
+ block size : 1985536
+
+ alloc size : 16
+ block size : 1985440
+
+ alloc size : 128
+ block size : 1985392
+
+ alloc size : 256
+ block size : 1985232
+
+Free new size : 256
+
+ alloc size : 4096
+ block size : 15998912
+
+ alloc size : 2560
+ block size : 15994784
+
+Free new size : 4096
+
+ alloc size : 3584
+ block size : 15992192
+
+ alloc size : 91648
+ block size : 15988576
+
+Free new size : 4096
+
+ alloc size : 192
+ block size : 256
+
+ alloc size : 48
+ block size : 1984944
+
+ alloc size : 48
+ block size : 1984864
+
+ alloc size : 32
+ block size : 1984784
+
+ alloc size : 496
+ block size : 1984720
+
+ alloc size : 400
+ block size : 1984192
+
+ alloc size : 32
+ block size : 1983760
+
+ alloc size : 240
+ block size : 140736002113680
+
+ alloc size : 80
+ block size : 140736002113440
+
+ alloc size : 1536
+ block size : 4096
+
+ alloc size : 112
+ block size : 140736002113360
+
+ alloc size : 128
+ block size : 140736002113248
+
+ alloc size : 112
+ block size : 140736002113120
+
+Free new size : 112
+
+ alloc size : 32768
+ block size : 15896896
+
+ alloc size : 128
+ block size : 140736002113008
+
+ alloc size : 128
+ block size : 140736002112880
+
+ alloc size : 128
+ block size : 140736002112752
+
+ alloc size : 128
+ block size : 140736002112624
+
+ alloc size : 128
+ block size : 140736002112496
+
+ alloc size : 144
+ block size : 140736002112368
+
+ alloc size : 128
+ block size : 140736002112224
+
+ alloc size : 128
+ block size : 140736002112096
+
+ alloc size : 128
+ block size : 140736002111968
+
+ alloc size : 128
+ block size : 140736002111840
+
+ alloc size : 128
+ block size : 140736002111712
+
+ alloc size : 128
+ block size : 140736002111584
+
+ alloc size : 128
+ block size : 140736002111456
+
+ alloc size : 128
+ block size : 140736002111328
+
+ alloc size : 128
+ block size : 140736002111200
+
+ alloc size : 128
+ block size : 140736002111072
+
+ alloc size : 128
+ block size : 140736002110944
+
+Free new size : 32768
+
+ alloc size : 464
+ block size : 140736002110816
+
+ alloc size : 32
+ block size : 112
+
+ alloc size : 64
+ block size : 140736002110352
+
+ alloc size : 32
+ block size : 80
+
+ alloc size : 64
+ block size : 116
+
+Free new size : 32

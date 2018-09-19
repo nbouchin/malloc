@@ -6,7 +6,7 @@
 #    By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/27 13:56:26 by nbouchin          #+#    #+#              #
-#    Updated: 2018/09/12 11:31:11 by nbouchin         ###   ########.fr        #
+#    Updated: 2018/09/19 09:41:42 by nbouchin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,17 +20,17 @@ HEADER  = 	includes/
 FLAGS   = 	-Wall -Wextra -Werror -g
 SRCDIR  = 	srcs/
 OBJDIR  = 	objs/
-SRC	=	ft_free.c		\
+SRC	=	free.c		\
 		malloc.c	\
 		ft_test.c \
-		ft_realloc.c
+		realloc.c
 
 SRCS	= $(addprefix $(SRCDIR), $(SRC))
 OBJS	= $(addprefix $(OBJDIR), $(SRC:.c=.o))
 
 
 $(OBJDIR)%.o: $(SRCDIR)%.c $(HEADER)libft_malloc.h
-	$(CC) -o $@ -c $< $(FLAGS) -I $(HEADER)
+	$(CC) -fPIC -o $@ -c $< $(FLAGS) -I $(HEADER)
 
 all: $(OBJDIR) $(NAME)
 

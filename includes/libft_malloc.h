@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/17 16:03:48 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/19 10:17:49 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # define _GNU_SOURCE
 
 # include <unistd.h>
+# include <stdint.h>
 # include <pthread.h>
 # include <sys/mman.h>
 # include <sys/resource.h>
@@ -78,12 +79,13 @@ typedef	struct		s_zone
 	t_page			*last;
 }					t_zone;
 
-extern t_zone		g_zone[3];
+extern t_zone			g_zone[3];
+extern pthread_mutex_t	g_mutex;
 
-void				ft_free(void *ptr);
-void				*ft_malloc(size_t size);
-void				*ft_calloc(size_t count, size_t size);
-void				*ft_realloc(void *ptr, size_t size);
+void				free(void *ptr);
+void				*malloc(size_t size);
+void				*calloc(size_t count, size_t size);
+void				*realloc(void *ptr, size_t size);
 void				ft_test();
 size_t				get_offset(size_t alloc_size, int offset);
 

@@ -14,19 +14,18 @@ void		defrag(t_block **p, void *ptr, int offset)
 	{
 		if ((t_block*)((*p)) == (t_block*)ptr - 1)
 		{
-			(void)offset;
 			(*p)->is_free = 1;
 			(*p)->size = get_offset((*p)->size, offset);
-//			if ((*p)->nxt && (*p)->nxt->is_free)
-//			{
-//				(*p)->size += (*p)->nxt->size + sizeof(t_block);
-//				(*p)->nxt = (*p)->nxt->nxt;
-//			}
-//			if (prev && prev->is_free)
-//			{
-//				prev->size += (*p)->size + sizeof(t_block);
-//				prev->nxt = (*p)->nxt;
-//			}
+			if ((*p)->nxt && (*p)->nxt->is_free)
+			{
+				(*p)->size += (*p)->nxt->size + sizeof(t_block);
+				(*p)->nxt = (*p)->nxt->nxt;
+			}
+			if (prev && prev->is_free)
+			{
+				prev->size += (*p)->size + sizeof(t_block);
+				prev->nxt = (*p)->nxt;
+			}
 			return ;
 		}
 		prev = (*p);
@@ -155,3 +154,9 @@ void		ft_free(void *ptr)
 	return ;
 }
 
+void		free(void *ptr)
+{
+	//pthread_mutex_lock(&g_mutex);
+	ft_free(ptr);
+	//pthread_mutex_unlock(&g_mutex);
+}

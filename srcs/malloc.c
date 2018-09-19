@@ -1,11 +1,12 @@
 #include "../includes/libft_malloc.h"
 #include <stdio.h>
 
-t_zone g_zone[3] = {{0, NULL, NULL}, {0, NULL, NULL}, {0, NULL, NULL}};
+t_zone			g_zone[3] = {{0, NULL, NULL}, {0, NULL, NULL}, {0, NULL, NULL}};
+pthread_mutex_t	g_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /*
- **	Fill a block informations and set his status.
- */
+**	Fill a block informations and set his status.
+*/
 
 
 void				print_addr_fd(void *addr, int fd)
@@ -54,8 +55,6 @@ t_page *new_page(size_t page_size)
 
 	p = NULL;
 	page = NULL;
-	p = NULL;
-	page = NULL;
 	page = mmap(NULL, page_size, PROT_WRITE | PROT_READ, MAP_ANON | MAP_PRIVATE, -1, 0);
 	page->size = page_size - sizeof(t_page);
 	page->nxt = NULL;
@@ -65,8 +64,8 @@ t_page *new_page(size_t page_size)
 }
 
 /*
- **	Create a new memory zone according to the asked zone type.
- */
+**	Create a new memory zone according to the asked zone type.
+*/
 
 void new_zone(size_t zone_size, int zone_type)
 {
@@ -84,10 +83,10 @@ void new_zone(size_t zone_size, int zone_type)
 }
 
 /*
- **	Run through pages block to get a free block.
- */
+**	Run through pages block to get a free block.
+*/
 
-t_block *search_free_block(t_page **page, size_t alloc_size)
+t_block *search_free_block(t_page **page, size_t alloc_size, int offset)
 {
 	t_block	*block;
 	t_page	*prev;
@@ -100,7 +99,7 @@ t_block *search_free_block(t_page **page, size_t alloc_size)
 		block = (t_block *)((*page) + 1);
 		while (block)
 		{
-			if (block->is_free == 1 && block->size >= alloc_size)
+			if ((block->is_free && block->size >= alloc_size + sizeof(t_block) + offset) || (block->is_free && block->size == alloc_size))
 				return (block);
 			block = block->nxt;
 		}
@@ -111,8 +110,8 @@ t_block *search_free_block(t_page **page, size_t alloc_size)
 }
 
 /*
- **	Compute the allocation offset and return new allocation size.
- */
+**	Compute the allocation offset and return new allocation size.
+*/
 
 size_t get_offset(size_t alloc_size, int offset)
 {
@@ -120,8 +119,8 @@ size_t get_offset(size_t alloc_size, int offset)
 }
 
 /*
- **	Relink a new non-free block, with the old free block and the old free block next block.
- */
+**	Relink a new non-free block, with the old free block and the old free block next block.
+*/
 
 void relink_block(t_block *block, size_t alloc_size, size_t offset)
 {
@@ -129,46 +128,33 @@ void relink_block(t_block *block, size_t alloc_size, size_t offset)
 	size_t	old_size;
 
 	backup = NULL;
-	old_size = 0;
 	old_size = block->size;
+	backup = block->nxt;
 	if (block->nxt)
 	{
-		backup = block->nxt;
-		ft_putendl("There is a next here");
 		if (block->size > get_offset(alloc_size, offset))
 		{
-			ft_putendl("There is much place here");
 			fill_block(block, (t_block *)((char *)(block + 1) + get_offset(alloc_size, offset)), alloc_size, 0);
-			fill_block(block->nxt, backup, old_size - (get_offset(block->size, offset)), 1);
+			fill_block(block->nxt, backup, old_size - (get_offset(block->size, offset) + sizeof(t_block)), 1);
 		}
 		else if (block->size == get_offset(alloc_size, offset))
-		{
 			block->is_free = 0;
-			ft_putendl("Perfect node found");
-		}
-		ft_putendl("");
 	}
 	else
 	{
-		ft_putendl("There is no next here");
 		if (block->size > get_offset(alloc_size, offset))
 		{
-			ft_putendl("There is much place here");
 			fill_block(block, (t_block *)((char *)(block + 1) + get_offset(alloc_size, offset)), alloc_size, 0);
 			fill_block(block->nxt, NULL, old_size - (get_offset(block->size, offset) + sizeof(t_block)), 1);
 		}
 		else if (block->size == get_offset(alloc_size, offset))
-		{
 			block->is_free = 0;
-			ft_putendl("Perfect node found");
-		}
-		ft_putendl("");
 	}
 }
 
 /*
- **	Tiny allocation general runtime.
- */
+**	Tiny allocation general runtime.
+*/
 
 void *tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 {
@@ -184,7 +170,7 @@ void *tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 	new_zone(alloc_size, page_type);
 	page = g_zone[page_type].page;
 	offset = (alloc_type == TINY) ? 16 : 512;
-	block = search_free_block(&page, get_offset(alloc_size, offset));
+	block = search_free_block(&page, get_offset(alloc_size, offset), offset);
 	if (block)
 		relink_block(block, alloc_size, offset);
 	else
@@ -193,7 +179,7 @@ void *tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 			page->nxt = new_page(N);
 		else
 			page->nxt = new_page(M);
-		block = search_free_block(&page->nxt, get_offset(alloc_size, offset));
+		block = search_free_block(&page->nxt, get_offset(alloc_size, offset), offset);
 		relink_block(block, alloc_size, offset);
 	}
 	return (block + 1);
@@ -207,8 +193,8 @@ void new_big_block(size_t zone_size, int zone_type)
 }
 
 /*
- **	Large allocation general runtime.
- */
+**	Large allocation general runtime.
+*/
 
 void *large_allocation(size_t alloc_size)
 {
@@ -227,8 +213,8 @@ void *large_allocation(size_t alloc_size)
 }
 
 /*
- **	Run allocation runtime according the allocation size request.
- */
+**	Run allocation runtime according the allocation size request.
+*/
 
 void *ft_malloc(size_t alloc_size)
 {
@@ -240,4 +226,14 @@ void *ft_malloc(size_t alloc_size)
 		return (large_allocation(alloc_size));
 	else
 		return (0);
+}
+
+void	*malloc(size_t alloc_size)
+{
+	void	*temp;
+
+	pthread_mutex_lock(&g_mutex);
+	temp = ft_malloc(alloc_size);
+	pthread_mutex_unlock(&g_mutex);
+	return (temp);
 }

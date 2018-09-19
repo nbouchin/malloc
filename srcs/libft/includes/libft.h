@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 15:14:24 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/12 11:25:48 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/18 17:45:47 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <string.h>
+# include <stdint.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/types.h>
