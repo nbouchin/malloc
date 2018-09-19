@@ -100,7 +100,7 @@ t_block *search_free_block(t_page **page, size_t alloc_size)
 		block = (t_block *)((*page) + 1);
 		while (block)
 		{
-			if (block->is_free == 1 && block->size >= alloc_size + sizeof(t_block) + 512)
+			if (block->is_free == 1 && block->size >= alloc_size)
 				return (block);
 			block = block->nxt;
 		}
@@ -134,23 +134,35 @@ void relink_block(t_block *block, size_t alloc_size, size_t offset)
 	if (block->nxt)
 	{
 		backup = block->nxt;
+		ft_putendl("There is a next here");
 		if (block->size > get_offset(alloc_size, offset))
 		{
+			ft_putendl("There is much place here");
 			fill_block(block, (t_block *)((char *)(block + 1) + get_offset(alloc_size, offset)), alloc_size, 0);
 			fill_block(block->nxt, backup, old_size - (get_offset(block->size, offset)), 1);
 		}
 		else if (block->size == get_offset(alloc_size, offset))
+		{
 			block->is_free = 0;
+			ft_putendl("Perfect node found");
+		}
+		ft_putendl("");
 	}
 	else
 	{
+		ft_putendl("There is no next here");
 		if (block->size > get_offset(alloc_size, offset))
 		{
+			ft_putendl("There is much place here");
 			fill_block(block, (t_block *)((char *)(block + 1) + get_offset(alloc_size, offset)), alloc_size, 0);
 			fill_block(block->nxt, NULL, old_size - (get_offset(block->size, offset) + sizeof(t_block)), 1);
 		}
 		else if (block->size == get_offset(alloc_size, offset))
+		{
 			block->is_free = 0;
+			ft_putendl("Perfect node found");
+		}
+		ft_putendl("");
 	}
 }
 
