@@ -63,7 +63,6 @@ void		delete_page(t_block *p, t_page **page, t_page **prev, int i)
 		{
 			g_zone[i].total_size = 0; 
 			g_zone[i].last = NULL;
-			g_zone[i].page = NULL;
 			return ;
 		}
 		munmap((*page), (*page)->size + sizeof(t_page));

@@ -22,7 +22,7 @@ int main()
 	{
 		addr = (char*)malloc(50);
 		ft_strcpy(addr, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		ft_putendl(addr);
+//		ft_putendl(addr);
 		free(addr);
 		addr1 = (char*)malloc(50);
 		addr1[0] = 42;
