@@ -39,30 +39,33 @@ void		defrag(t_block **p, void *ptr, int offset)
 
 void		delete_page(t_block *p, t_page **page, t_page **prev, int i)
 {
-	if ((p->size == (*page)->size - sizeof(t_block)) && i == 2)
-	{
-		if (!(*prev) && (*page)->nxt)
-			g_zone[2].page = (*page)->nxt;
-		else if ((*prev) && (*page)->nxt)
-			(*prev)->nxt = (*page)->nxt;
-		else
-		{
-			g_zone[2].total_size = 0; 
-			g_zone[2].last = NULL;
-			g_zone[2].page = NULL;
-		}
-		munmap((*page), (*page)->size + sizeof(t_page));
-	}
-	else if (p->size == (*page)->size - sizeof(t_block))
+	if (p->size == (*page)->size - sizeof(t_block))
 	{
 		if (!(*prev) && (*page)->nxt)	
+		{
 			g_zone[i].page = (*page)->nxt;			
+			g_zone[i].total_size -= (*page)->size + sizeof(t_page);
+		}
 		else if ((*prev) && (*page)->nxt)
+		{
 			(*prev)->nxt = (*page)->nxt;
+			g_zone[i].total_size -= (*page)->size + sizeof(t_page);
+		}
+		else if ((*prev) && !(*page)->nxt && (*prev)->nxt)
+		{
+			(*prev)->nxt = NULL;
+			g_zone[i].last = (*prev);
+			g_zone[i].total_size -= (*page)->size + sizeof(t_page);
+		}
 		else
 		{
 			g_zone[i].total_size = 0; 
 			g_zone[i].last = NULL;
+			if (i == 2)
+			{
+				g_zone[2].page = NULL;
+				munmap((*page), (*page)->size + sizeof(t_page));
+			}
 			return ;
 		}
 		munmap((*page), (*page)->size + sizeof(t_page));
@@ -155,7 +158,7 @@ void		ft_free(void *ptr)
 
 void		free(void *ptr)
 {
-	//pthread_mutex_lock(&g_mutex);
+	pthread_mutex_lock(&g_mutex);
 	ft_free(ptr);
-	//pthread_mutex_unlock(&g_mutex);
+	pthread_mutex_unlock(&g_mutex);
 }
