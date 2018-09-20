@@ -17,7 +17,7 @@ int	exists(t_block *p, void *ptr)
 	prev = NULL;
 	while (p)
 	{
-		if ((t_block*)(p) == (t_block*)ptr - 1)
+		if ((t_block*)(p + 1) == ptr)
 			return (1);
 		p = p->nxt;
 	}
@@ -88,27 +88,45 @@ int		get_value(t_block *block)
 	return (-1);
 }
 
-void	*realloc_runtime(void *ptr, t_block *newp, size_t new_size)
+int		check_correct_offset(size_t new_size, int offset)
 {
-	size_t	total;
+	if (new_size <= TINY && offset == 16)
+		return (1);
+	else if(new_size > TINY && new_size <= SMALL && offset == 512)
+		return (1);
+	else
+		return (0);
+}
+
+void	*realloc_runtime(void *ptr, size_t new_size)
+{
 	int		offset;
 	t_block	*backup;
 	t_block	*block;
-
-	total = 0;
+	void    *newp;
+	
+	pthread_mutex_unlock(&g_mutex);
+	newp = malloc(new_size);
+	pthread_mutex_lock(&g_mutex);
 	block = (t_block *)ptr - 1;
 	backup = block->nxt;
+	(void)offset;
 	offset = get_value(block);
 	if (block->nxt && block->nxt->is_free)
 	{
-		block->size = get_offset(block->size, offset) + sizeof(t_block) + block->nxt->size;
-		block->nxt = block->nxt->nxt;
+		fill_block(block, block->nxt->nxt, get_offset(block->size, offset) 
+				+ sizeof(t_block) + block->nxt->size, 1);
 		backup = block->nxt;
-		total = block->size;
 	}
-	if ((get_offset(new_size, offset) + sizeof(t_block) + offset) >= block->size)
-		relink_block(block, new_size, offset);
-	else if (get_offset(new_size, offset) == block->size)
+	if (block->size >= (get_offset(new_size, offset) + sizeof(t_block) + offset))
+	{
+		if (check_correct_offset(new_size, offset))
+		{
+			relink_block(block, new_size, offset);
+			return (block + 1);
+		}
+	}
+	if (get_offset(new_size, offset) == block->size)
 		return (ptr);
 	ft_bzero(newp, new_size);
 	ft_memcpy(newp, ptr, block->size);
@@ -118,17 +136,21 @@ void	*realloc_runtime(void *ptr, t_block *newp, size_t new_size)
 void    *ft_realloc(void *ptr, size_t size)
 {
 	t_block    *old;
-	void    *newp;
-	
-	newp = malloc(size);
+
 	old = (t_block *)ptr - 1;
 	if (!ptr)
+	{
+		pthread_mutex_unlock(&g_mutex);
 		return (malloc(size));
-	if (!search_block(ptr) || newp == 0)
+	}
+	if (!search_block(ptr))
 		return (0);
 	if (old->size >= size)
+	{
+		old->size = size;
 		return (ptr);
-	return (realloc_runtime(ptr, newp, size));
+	}
+	return (realloc_runtime(ptr, size));
 }
 
 void	*calloc(size_t count, size_t size)
@@ -143,8 +165,8 @@ void    *realloc(void *ptr, size_t size)
 {
 	void	*temp;
 
-	//	pthread_mutex_lock(&g_mutex);
+	pthread_mutex_lock(&g_mutex);
 	temp = ft_realloc(ptr, size);
-	//	pthread_mutex_unlock(&g_mutex);
+	pthread_mutex_unlock(&g_mutex);
 	return (temp);
 }

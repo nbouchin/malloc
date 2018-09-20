@@ -5,7 +5,7 @@
 **	Memory free and defragmentation.
 */
 
-void		defrag(t_block **p, void *ptr, int offset)
+int		defrag(t_block **p, void *ptr, int offset)
 {
 	t_block		*prev;
 
@@ -26,11 +26,12 @@ void		defrag(t_block **p, void *ptr, int offset)
 				prev->size += (*p)->size + sizeof(t_block);
 				prev->nxt = (*p)->nxt;
 			}
-			return ;
+			return (1);
 		}
 		prev = (*p);
 		(*p) = (*p)->nxt;
 	}
+	return (0);
 }
 
 /*
@@ -124,8 +125,8 @@ void		tiny_small_free(void *ptr)
 				if ((char*)ptr >= (char*)(page) && (char*)ptr <= (char*)(page) + N)
 				{
 					p = (t_block *)((page) + 1);
-					defrag(&p, ptr, 16);
-					delete_page(p, &page, &prev, i);
+					if (defrag(&p, ptr, 16))
+						delete_page(p, &page, &prev, i);
 					return ;
 				}
 			}
@@ -134,8 +135,8 @@ void		tiny_small_free(void *ptr)
 				if ((char*)ptr >= (char*)(page) && (char*)ptr <= (char*)(page) + M)
 				{
 					p = (t_block *)((page) + 1);
-					defrag(&p, ptr, 512);
-					delete_page(p, &page, &prev, i);
+					if (defrag(&p, ptr, 512))
+						delete_page(p, &page, &prev, i);
 					return ;
 				}
 			}
@@ -152,7 +153,6 @@ void		ft_free(void *ptr)
 		return ;
 	tiny_small_free(ptr);
 	large_free(ptr);
-	(void)ptr;
 	return ;
 }
 
