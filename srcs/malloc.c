@@ -56,7 +56,8 @@ t_page *new_page(size_t page_size)
 	p = NULL;
 	if (page_size > 127000)
 	{
-		page = mmap(NULL, get_offset(page_size, 4096), PROT_WRITE | PROT_READ, MAP_ANON | MAP_PRIVATE, -1, 0); page->size = get_offset(page_size, 4096) - sizeof(t_page);
+		page = mmap(NULL, get_offset(page_size, 4096), PROT_WRITE | PROT_READ, MAP_ANON | MAP_PRIVATE, -1, 0);
+		page->size = get_offset(page_size, 4096) - sizeof(t_page);
 	}
 	else
 	{

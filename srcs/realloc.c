@@ -88,27 +88,32 @@ int		get_value(t_block *block)
 	return (-1);
 }
 
-//void	*realloc_runtime(void *ptr, t_block *newp, size_t new_size)
-//{
-//	size_t	total;
-//	int		offset;
-//	t_block	*block;
-//
-//	total = 0;
-//	block = (t_block *)ptr - 1;
-//	(void)offset;
-//	offset = get_value(block);
-//	if (block->nxt && block->nxt->is_free)
-//	{
-//		backup = block->nxt->nxt;
-//		block->size = get_offset(block->size, offset) + sizeof(t_block) + block->nxt->size;
-//		block->nxt = block->nxt->nxt;
-//		total = block->size;
-//	}
-//	ft_bzero(newp, new_size);
-//	ft_memcpy(newp, ptr, block->size);
-//	return (newp);
-//}
+void	*realloc_runtime(void *ptr, t_block *newp, size_t new_size)
+{
+	size_t	total;
+	int		offset;
+	t_block	*backup;
+	t_block	*block;
+
+	total = 0;
+	block = (t_block *)ptr - 1;
+	backup = block->nxt;
+	offset = get_value(block);
+	if (block->nxt && block->nxt->is_free)
+	{
+		block->size = get_offset(block->size, offset) + sizeof(t_block) + block->nxt->size;
+		block->nxt = block->nxt->nxt;
+		backup = block->nxt;
+		total = block->size;
+	}
+	if ((get_offset(new_size, offset) + sizeof(t_block) + offset) >= block->size)
+		relink_block(block, new_size, offset);
+	else if (get_offset(new_size, offset) == block->size)
+		return (ptr);
+	ft_bzero(newp, new_size);
+	ft_memcpy(newp, ptr, block->size);
+	return (newp);
+}
 
 void    *ft_realloc(void *ptr, size_t size)
 {
@@ -118,42 +123,13 @@ void    *ft_realloc(void *ptr, size_t size)
 	newp = malloc(size);
 	old = (t_block *)ptr - 1;
 	if (!ptr)
-	{
-		newp = malloc(size);
-		dprintf(2, "1 %p\n", newp);
-		return (newp);
-	}
+		return (malloc(size));
 	if (!search_block(ptr) || newp == 0)
-	{
-		dprintf(2, "2 %p\n", newp);
 		return (0);
-	}
 	if (old->size >= size)
-	{
-		dprintf(2, "3 %p\n", ptr);
 		return (ptr);
-	}
-	ft_bzero(newp, size);
-	ft_memcpy(newp, ptr, old->size);
-	dprintf(2, "4 %p\n", newp);
-	return (newp);
+	return (realloc_runtime(ptr, newp, size));
 }
-
-//void	*ft_realloc(void *ptr, size_t nsize)
-//{
-//	t_block		*newp;
-//	t_block		*block;
-//
-//	newp = malloc(nsize);
-//	block = (t_block *)ptr - 1;
-//	if (!ptr)
-//		return (malloc(nsize));
-//	if (!search_block(ptr) || newp == 0)
-//		return (0);
-//	if (block->size >= nsize)
-//		return (ptr);
-//	return (realloc_runtime(ptr, newp, nsize));
-//}
 
 void	*calloc(size_t count, size_t size)
 {
