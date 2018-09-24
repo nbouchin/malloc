@@ -49,9 +49,11 @@ int	search_block(void *ptr)
 {
 	int				i;
 	int				psize;
-	const t_page	*page = NULL;
-	const t_block	*block = NULL;
+	const t_page	*page;
+	const t_block	*block;
 
+	page = NULL;
+	block = NULL;
 	i = 0;
 	psize = 0;
 	while (i <= 2)

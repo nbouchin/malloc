@@ -61,12 +61,14 @@ void		print_total(int total)
 void		show_alloc_mem(void)
 {
 	int				i;
-	const t_page	*page = NULL;
-	t_block			*p = NULL;
+	const t_page	*page;
+	t_block			*p;
 	size_t	total;
 
 	i = 0;
 	total = 0;
+	page = NULL;
+	p = NULL;
 	while (i <= 2)
 	{
 		page = g_zone[i].page;
