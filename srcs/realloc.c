@@ -10,11 +10,8 @@ void	*ft_calloc(size_t count, size_t size)
 	return (p);
 }
 
-int	exists(t_block *p, void *ptr)
+int	exists(const t_block *p, void *ptr)
 {
-	t_block		*prev;
-
-	prev = NULL;
 	while (p)
 	{
 		if ((t_block*)(p + 1) == ptr)
@@ -38,25 +35,33 @@ int		ret_offset(int i)
 	return (offset);
 }
 
+int	ret_psize(int i)
+{
+	int psize;
+
+	psize = 0;
+	psize = (i == 0) ? N : M;
+	(i == 2) ? psize = 4096 : 0;
+	return (psize);
+}
+
 int	search_block(void *ptr)
 {
-	int i;
-	int psize;
-	t_page *page;
-	t_block *block;
+	int				i;
+	int				psize;
+	const t_page	*page = NULL;
+	const t_block	*block = NULL;
 
 	i = 0;
 	psize = 0;
-	page = NULL;
-	block = NULL;
 	while (i <= 2)
 	{
-		psize = (i == 0) ? N : M;
-		(i == 2) ? psize = 4096 : 0;
+		psize = ret_psize(i);
 		page = g_zone[i].page;
 		while (page)
 		{
-			if ((char*)ptr >= (char*)(page) && (char*)ptr <= (char*)(page) + psize)
+			if ((char*)ptr >= (char*)(page)
+			&& (char*)ptr <= (char*)(page) + psize)
 			{
 				block = (t_block*)((page) + 1);
 				if (exists(block, ptr))
@@ -112,7 +117,6 @@ void	*realloc_runtime(void *ptr, size_t new_size)
 	t_block	*block;
 	void    *newp;
 
-	newp = NULL;
 	block = (t_block *)ptr - 1;
 	offset = get_value(block);
 	pthread_mutex_unlock(&g_mutex);
