@@ -43,24 +43,16 @@ void		delete_page(t_block *p, t_page **page, t_page **prev, int i)
 	if (p->size == (*page)->size - sizeof(t_block))
 	{
 		if (!(*prev) && (*page)->nxt)	
-		{
 			g_zone[i].page = (*page)->nxt;			
-			g_zone[i].total_size -= (*page)->size + sizeof(t_page);
-		}
 		else if ((*prev) && (*page)->nxt)
-		{
 			(*prev)->nxt = (*page)->nxt;
-			g_zone[i].total_size -= (*page)->size + sizeof(t_page);
-		}
 		else if ((*prev) && !(*page)->nxt && (*prev)->nxt)
 		{
 			(*prev)->nxt = NULL;
 			g_zone[i].last = (*prev);
-			g_zone[i].total_size -= (*page)->size + sizeof(t_page);
 		}
 		else
 		{
-			g_zone[i].total_size = 0; 
 			g_zone[i].last = NULL;
 			if (i == 2)
 			{
@@ -100,11 +92,19 @@ void		large_free(void *ptr)
 	}
 }
 
-/*
-**	Tiny and small allocation free runtime.
-*/
+int		ret_nbr(int i, int j)
+{
+	if (i == 0 && j == 0)
+		return (N);
+	else if (i == 0 && j == 1)
+		return (16);
+	else if (i == 1 && j == 0)
+		return (M);
+	else 
+		return (512);
+}
 
-void		tiny_small_free(void *ptr)
+int		get_page_type(void *ptr)
 {
 	int			i;
 	t_block		*p;
@@ -120,39 +120,56 @@ void		tiny_small_free(void *ptr)
 		page = g_zone[i].page;
 		while (page)
 		{
-			if (i == 0)
-			{
-				if ((char*)ptr >= (char*)(page) && (char*)ptr <= (char*)(page) + N)
-				{
-					p = (t_block *)((page) + 1);
-					if (defrag(&p, ptr, 16))
-						delete_page(p, &page, &prev, i);
-					return ;
-				}
-			}
-			else if (i == 1)
-			{
-				if ((char*)ptr >= (char*)(page) && (char*)ptr <= (char*)(page) + M)
-				{
-					p = (t_block *)((page) + 1);
-					if (defrag(&p, ptr, 512))
-						delete_page(p, &page, &prev, i);
-					return ;
-				}
-			}
+			if ((char*)ptr >= (char*)(page)
+			&& (char*)ptr <= (char*)(page) + ret_nbr(i, 0))
+				return (i);
 			prev = (page);
 			page = page->nxt;
 		}
 		i++;
 	}
+	return (2);
+}
+
+/*
+**	Tiny and small allocation free runtime.
+*/
+
+void		tiny_small_free(void *ptr, int i)
+{
+	t_block		*p;
+	t_page		*page;
+	t_page		*prev;
+
+	p = NULL;
+	prev = NULL;
+	page = g_zone[i].page;
+	while (page)
+	{
+		if ((char*)ptr >= (char*)(page)
+		&& (char*)ptr <= (char*)(page) + ret_nbr(i, 0))
+		{
+			p = (t_block *)((page) + 1);
+			if (defrag(&p, ptr, ret_nbr(i, 1)))
+				delete_page(p, &page, &prev, i);
+			return ;
+		}
+		prev = (page);
+		page = page->nxt;
+	}
 }
 
 void		ft_free(void *ptr)
 {
+	int		i;
+	
+	i = get_page_type(ptr);
 	if (ptr == 0)
 		return ;
-	tiny_small_free(ptr);
-	large_free(ptr);
+	if (i < 2)
+		tiny_small_free(ptr, i);
+	else
+		large_free(ptr);
 	return ;
 }
 

@@ -6,7 +6,7 @@
 #    By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/27 13:56:26 by nbouchin          #+#    #+#              #
-#    Updated: 2018/09/18 17:49:58 by nbouchin         ###   ########.fr        #
+#    Updated: 2018/09/24 12:09:13 by nbouchin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,7 +105,7 @@ $(OBJDIR):
 	mkdir -p objs objs/get_next_line objs/str objs/put objs/num objs/mem objs/lst objs/conv objs/check objs/tab
 
 $(OBJDIR)%.o: $(SRCDIR)%.c $(HEADER)libft.h
-	$(CC) -fPIC -o $@ -c $< $(FLAGS) -I $(HEADER)
+	$(CC) -g -fPIC -o $@ -c $< $(FLAGS) -I $(HEADER)
 
 clean:
 	rm -rf objs

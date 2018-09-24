@@ -221,6 +221,6 @@ int main()
 	free(addr1);
 		i++;
 	}
-	ft_test();
+	show_alloc_mem();
 	return (0);
 } 

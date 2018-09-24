@@ -6,7 +6,7 @@
 #    By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/07/27 13:56:26 by nbouchin          #+#    #+#              #
-#    Updated: 2018/09/19 09:41:42 by nbouchin         ###   ########.fr        #
+#    Updated: 2018/09/24 08:49:40 by nbouchin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ SRCDIR  = 	srcs/
 OBJDIR  = 	objs/
 SRC	=	free.c		\
 		malloc.c	\
-		ft_test.c \
+		show_alloc_mem.c \
 		realloc.c
 
 SRCS	= $(addprefix $(SRCDIR), $(SRC))

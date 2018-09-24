@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/20 14:57:49 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/24 08:57:42 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void				free(void *ptr);
 void				*malloc(size_t size);
 void				*calloc(size_t count, size_t size);
 void				*realloc(void *ptr, size_t size);
-void				ft_test();
+void				show_alloc_mem();
 void				fill_block(t_block *p, t_block *next, size_t block_size, int state);
 size_t				get_offset(size_t alloc_size, int offset);
 void				relink_block(t_block *block, size_t alloc_size, size_t offset);

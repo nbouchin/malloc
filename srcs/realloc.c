@@ -24,6 +24,20 @@ int	exists(t_block *p, void *ptr)
 	return (0);
 }
 
+int		ret_offset(int i)
+{
+	int	offset;
+
+	offset = 0;
+	if (i == 0)
+		offset = 16;
+	else if (i == 1)
+		offset = 512;
+	else if (i == 2)
+		offset = 4096;
+	return (offset);
+}
+
 int	search_block(void *ptr)
 {
 	int i;
@@ -38,8 +52,7 @@ int	search_block(void *ptr)
 	while (i <= 2)
 	{
 		psize = (i == 0) ? N : M;
-		if (i == 2)
-			psize = 4096;
+		(i == 2) ? psize = 4096 : 0;
 		page = g_zone[i].page;
 		while (page)
 		{
@@ -55,7 +68,6 @@ int	search_block(void *ptr)
 	}
 	return (0);
 }
-
 
 int		get_value(t_block *block)
 {
@@ -74,13 +86,9 @@ int		get_value(t_block *block)
 		page = g_zone[i].page;
 		while (page)
 		{
-			if ((char*)block >= (char*)(page) && (char*)block <= (char*)(page) + psize)
-			{
-				offset = (i == 0) ? 16 : 512;	
-				if (i == 2)
-					offset = 4096;
-				return (offset);
-			}
+			if ((char*)block >= (char*)(page) && (char*)block
+			<= (char*)(page) + psize)
+				return (ret_offset(i));
 			page = page->nxt;
 		}
 		i++;
@@ -101,33 +109,29 @@ int		check_correct_offset(size_t new_size, int offset)
 void	*realloc_runtime(void *ptr, size_t new_size)
 {
 	int		offset;
-	t_block	*backup;
 	t_block	*block;
 	void    *newp;
-	
+
+	newp = NULL;
+	block = (t_block *)ptr - 1;
+	offset = get_value(block);
 	pthread_mutex_unlock(&g_mutex);
 	newp = malloc(new_size);
 	pthread_mutex_lock(&g_mutex);
-	block = (t_block *)ptr - 1;
-	backup = block->nxt;
-	(void)offset;
-	offset = get_value(block);
-	if (block->nxt && block->nxt->is_free)
+	if (check_correct_offset(new_size, offset))
 	{
-		fill_block(block, block->nxt->nxt, get_offset(block->size, offset) 
-				+ sizeof(t_block) + block->nxt->size, 1);
-		backup = block->nxt;
-	}
-	if (block->size >= (get_offset(new_size, offset) + sizeof(t_block) + offset))
-	{
-		if (check_correct_offset(new_size, offset))
+		if (block->nxt && block->nxt->is_free)
+			fill_block(block, block->nxt->nxt, get_offset(block->size, offset)
+			+ sizeof(t_block) + block->nxt->size - 1, 1);
+		if (block->size > (get_offset(new_size, offset)
+		+ sizeof(t_block) + offset))
 		{
 			relink_block(block, new_size, offset);
 			return (block + 1);
 		}
+		if (get_offset(new_size, offset) == block->size)
+			return (ptr);
 	}
-	if (get_offset(new_size, offset) == block->size)
-		return (ptr);
 	ft_bzero(newp, new_size);
 	ft_memcpy(newp, ptr, block->size);
 	return (newp);
