@@ -2,10 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   libft_malloc.h                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */ /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/25 11:09:06 by nbouchin         ###   ########.fr       */
+/*   Created: 2018/09/25 14:31:24 by nbouchin          #+#    #+#             */
+/*   Updated: 2018/09/25 14:31:47 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +117,5 @@ int					ret_psize(int i);
 int					search_block(void *ptr);
 void				*ft_calloc(size_t count, size_t size);
 void				*calloc(size_t count, size_t size);
-
 
 #endif
