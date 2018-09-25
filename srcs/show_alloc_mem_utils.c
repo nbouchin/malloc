@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 10:22:25 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/25 10:29:11 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/25 13:24:00 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void		print_page(const t_page *page, int i)
 		ft_putstr("LARGE : ");
 	print_addr(page);
 	ft_putendl("");
-	dprintf(2, "PRINTF : %p\n", page);
 }
 
 void		print_octets(t_block *p)
@@ -61,7 +60,10 @@ void		print_octets(t_block *p)
 	print_addr(p + p->size);
 	ft_putstr(" : ");
 	ft_putnbr(p->size);
-	ft_putstr(" octets\n");
+	if (p->is_free)
+		ft_putstr(" free octets\n");
+	else
+		ft_putstr(" octets\n");
 }
 
 void		print_total(int total)

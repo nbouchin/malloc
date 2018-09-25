@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 08:34:11 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/25 12:18:53 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/25 14:05:52 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,16 @@ void	*realloc_runtime(void *ptr, size_t new_size)
 	int		off;
 	t_block	*block;
 	void	*newp;
+	size_t	old;
 
 	block = (t_block *)ptr - 1;
 	off = get_value(block);
-	pthread_mutex_unlock(&g_mutex);
-	newp = malloc(new_size);
-	pthread_mutex_lock(&g_mutex);
+	old = block->size;
 	if (check_correct_offset(new_size, off))
 	{
 		if (block->nxt && block->nxt->is_free)
 			fill_block(block, block->nxt->nxt, get_offset(block->size, off)
-			+ sizeof(t_block) + block->nxt->size - 1, 1);
+			+ sizeof(t_block) + block->nxt->size, 0);
 		if (block->size > (get_offset(new_size, off) + sizeof(t_block) + off))
 		{
 			relink_block(block, new_size, off);
@@ -74,8 +73,9 @@ void	*realloc_runtime(void *ptr, size_t new_size)
 		if (get_offset(new_size, off) == block->size)
 			return (ptr);
 	}
-	ft_bzero(newp, new_size);
-	ft_memcpy(newp, ptr, block->size);
+	newp = ft_malloc(new_size);
+	ft_memcpy(newp, ptr, old);
+	ft_free(ptr);
 	return (newp);
 }
 

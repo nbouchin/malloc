@@ -2,8 +2,7 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   libft_malloc.h                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                    +:+ +:+         +:+     */ /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
 /*   Updated: 2018/09/25 11:09:06 by nbouchin         ###   ########.fr       */
@@ -86,7 +85,9 @@ void				print_page(const t_page *page, int i);
 void				print_octets(t_block *p);
 void				print_total(int total);
 void				free(void *ptr);
+void				ft_free(void *ptr);
 void				*malloc(size_t size);
+void				*ft_malloc(size_t size);
 void				*calloc(size_t count, size_t size);
 void				*realloc(void *ptr, size_t size);
 void				show_alloc_mem();
@@ -115,5 +116,6 @@ int					ret_psize(int i);
 int					search_block(void *ptr);
 void				*ft_calloc(size_t count, size_t size);
 void				*calloc(size_t count, size_t size);
+
 
 #endif
