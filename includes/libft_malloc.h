@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/13 08:55:30 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/24 08:57:42 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/25 11:09:06 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@
 **	Region size				: N/A
 */
 
-# define	TINY		992
-# define	SMALL		127000
-# define	LARGE		127000
+# define TINY	992
+# define SMALL	127000
+# define LARGE	127000
+# define N		488  * getpagesize()
+# define M		3906 * getpagesize()
 
-# define	N			488  * getpagesize()
-# define	M			3906 * getpagesize()
 typedef struct		s_block
 {
 	char			is_free;
@@ -80,13 +80,40 @@ typedef	struct		s_zone
 extern t_zone			g_zone[3];
 extern pthread_mutex_t	g_mutex;
 
+void				print_addr_fd(const void *addr, int fd);
+void				print_addr(const void *addr);
+void				print_page(const t_page *page, int i);
+void				print_octets(t_block *p);
+void				print_total(int total);
 void				free(void *ptr);
 void				*malloc(size_t size);
 void				*calloc(size_t count, size_t size);
 void				*realloc(void *ptr, size_t size);
 void				show_alloc_mem();
-void				fill_block(t_block *p, t_block *next, size_t block_size, int state);
+void				fill_block(t_block *p, t_block *next,
+					size_t block_size, int state);
 size_t				get_offset(size_t alloc_size, int offset);
-void				relink_block(t_block *block, size_t alloc_size, size_t offset);
+void				relink_block(t_block *block, size_t alloc_size,
+					size_t offset);
+void				fill_block(t_block *p, t_block *next,
+					size_t block_size, int state);
+t_page				*new_page(size_t page_size);
+void				new_zone(size_t zone_size, int zone_type);
+t_block				*search_free_block(t_page **page, size_t alloc_size,
+					int offset);
+void				relink_block(t_block *block, size_t alloc_size,
+					size_t offset);
+size_t				get_offset(size_t alloc_size, int offset);
+int					defrag(t_block **p, void *ptr, int offset);
+void				delete_page(t_block *p, t_page **page, t_page **prev,
+					int i);
+int					ret_nbr(int i, int j);
+int					get_page_type(void *ptr);
+int					exists(const t_block *p, void *ptr);
+int					ret_offset(int i);
+int					ret_psize(int i);
+int					search_block(void *ptr);
+void				*ft_calloc(size_t count, size_t size);
+void				*calloc(size_t count, size_t size);
 
 #endif

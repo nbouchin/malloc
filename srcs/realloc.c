@@ -1,87 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   realloc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/09/25 08:34:11 by nbouchin          #+#    #+#             */
+/*   Updated: 2018/09/25 11:08:49 by nbouchin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/libft_malloc.h"
 #include <stdio.h>
 
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*p;
-
-	p = malloc(count * size);
-	bzero(p, count * size);
-	return (p);
-}
-
-int	exists(const t_block *p, void *ptr)
-{
-	while (p)
-	{
-		if ((t_block*)(p + 1) == ptr)
-			return (1);
-		p = p->nxt;
-	}
-	return (0);
-}
-
-int		ret_offset(int i)
-{
-	int	offset;
-
-	offset = 0;
-	if (i == 0)
-		offset = 16;
-	else if (i == 1)
-		offset = 512;
-	else if (i == 2)
-		offset = 4096;
-	return (offset);
-}
-
-int	ret_psize(int i)
-{
-	int psize;
-
-	psize = 0;
-	psize = (i == 0) ? N : M;
-	(i == 2) ? psize = 4096 : 0;
-	return (psize);
-}
-
-int	search_block(void *ptr)
-{
-	int				i;
-	int				psize;
-	const t_page	*page;
-	const t_block	*block;
-
-	page = NULL;
-	block = NULL;
-	i = 0;
-	psize = 0;
-	while (i <= 2)
-	{
-		psize = ret_psize(i);
-		page = g_zone[i].page;
-		while (page)
-		{
-			if ((char*)ptr >= (char*)(page)
-			&& (char*)ptr <= (char*)(page) + psize)
-			{
-				block = (t_block*)((page) + 1);
-				if (exists(block, ptr))
-					return (1);
-			}
-			page = page->nxt;
-		}
-		i++;
-	}
-	return (0);
-}
-
 int		get_value(t_block *block)
 {
-	int i;
-	int psize;
-	int	offset;
-	t_page *page;
+	int		i;
+	int		psize;
+	int		offset;
+	t_page	*page;
 
 	i = 0;
 	psize = 0;
@@ -107,7 +44,7 @@ int		check_correct_offset(size_t new_size, int offset)
 {
 	if (new_size <= TINY && offset == 16)
 		return (1);
-	else if(new_size > TINY && new_size <= SMALL && offset == 512)
+	else if (new_size > TINY && new_size <= SMALL && offset == 512)
 		return (1);
 	else
 		return (0);
@@ -115,27 +52,26 @@ int		check_correct_offset(size_t new_size, int offset)
 
 void	*realloc_runtime(void *ptr, size_t new_size)
 {
-	int		offset;
+	int		off;
 	t_block	*block;
-	void    *newp;
+	void	*newp;
 
 	block = (t_block *)ptr - 1;
-	offset = get_value(block);
+	off = get_value(block);
 	pthread_mutex_unlock(&g_mutex);
 	newp = malloc(new_size);
 	pthread_mutex_lock(&g_mutex);
-	if (check_correct_offset(new_size, offset))
+	if (check_correct_offset(new_size, off))
 	{
 		if (block->nxt && block->nxt->is_free)
-			fill_block(block, block->nxt->nxt, get_offset(block->size, offset)
+			fill_block(block, block->nxt->nxt, get_offset(block->size, off)
 			+ sizeof(t_block) + block->nxt->size - 1, 1);
-		if (block->size > (get_offset(new_size, offset)
-		+ sizeof(t_block) + offset))
+		if (block->size > (get_offset(new_size, off) + sizeof(t_block) + off))
 		{
-			relink_block(block, new_size, offset);
+			relink_block(block, new_size, off);
 			return (block + 1);
 		}
-		if (get_offset(new_size, offset) == block->size)
+		if (get_offset(new_size, off) == block->size)
 			return (ptr);
 	}
 	ft_bzero(newp, new_size);
@@ -143,9 +79,9 @@ void	*realloc_runtime(void *ptr, size_t new_size)
 	return (newp);
 }
 
-void    *ft_realloc(void *ptr, size_t size)
+void	*ft_realloc(void *ptr, size_t size)
 {
-	t_block    *old;
+	t_block		*old;
 
 	old = (t_block *)ptr - 1;
 	if (!ptr)
@@ -163,15 +99,7 @@ void    *ft_realloc(void *ptr, size_t size)
 	return (realloc_runtime(ptr, size));
 }
 
-void	*calloc(size_t count, size_t size)
-{
-	void	*temp;
-
-	temp = ft_calloc(count, size);
-	return (temp);
-}
-
-void    *realloc(void *ptr, size_t size)
+void	*realloc(void *ptr, size_t size)
 {
 	void	*temp;
 
