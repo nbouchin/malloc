@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 08:37:29 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/25 10:28:21 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/25 15:16:52 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int			run_through_pages(int i)
 		p = (t_block *)(page + 1);
 		while (p)
 		{
-			total += p->size;
+			if (!p->is_free)
+				total += p->size;
 			print_octets(p);
 			p = p->nxt;
 		}
@@ -38,7 +39,7 @@ int			run_through_pages(int i)
 	return (total);
 }
 
-void		show_alloc_mem(void)
+void		ft_show_alloc_mem(void)
 {
 	int	i;
 	int	total;
@@ -51,4 +52,11 @@ void		show_alloc_mem(void)
 		i++;
 	}
 	print_total(total);
+}
+
+void		show_alloc_mem(void)
+{
+	pthread_mutex_lock(&g_mutex);
+	ft_show_alloc_mem();
+	pthread_mutex_unlock(&g_mutex);
 }

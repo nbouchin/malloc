@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 11:05:22 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/25 11:05:24 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/25 14:43:52 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		ret_psize(int i)
 	int psize;
 
 	psize = 0;
-	psize = (i == 0) ? N : M;
+	psize = (i == 0) ? N * getpagesize() : M * getpagesize();
 	(i == 2) ? psize = 4096 : 0;
 	return (psize);
 }

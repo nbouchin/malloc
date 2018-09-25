@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 14:31:24 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/25 14:31:47 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/25 14:40:15 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@
 # define TINY	992
 # define SMALL	127000
 # define LARGE	127000
-# define N		488  * getpagesize()
-# define M		3906 * getpagesize()
+# define N		488
+# define M		3906
 
 typedef struct		s_block
 {

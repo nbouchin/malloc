@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 08:28:00 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/25 12:10:14 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/25 15:12:34 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	*tiny_small_allocation(size_t alloc_size, int page_type, int alloc_type)
 		relink_block(block, alloc_size, offset);
 	else
 	{
-		page->nxt = (alloc_type == TINY) ? new_page(N) : new_page(M);
+		page->nxt = (alloc_type == TINY) ? new_page(N * getpagesize()) :
+		new_page(M * getpagesize());
 		block = search_free_block(&page->nxt,
 		get_offset(alloc_size, offset), offset);
 		relink_block(block, alloc_size, offset);

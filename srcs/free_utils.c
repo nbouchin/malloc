@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 10:56:55 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/25 10:57:23 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/25 15:10:11 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,11 @@ void	delete_page(t_block *p, t_page **page, t_page **prev, int i)
 int		ret_nbr(int i, int j)
 {
 	if (i == 0 && j == 0)
-		return (N);
+		return (N * getpagesize());
 	else if (i == 0 && j == 1)
 		return (16);
 	else if (i == 1 && j == 0)
-		return (M);
+		return (M * getpagesize());
 	else
 		return (512);
 }

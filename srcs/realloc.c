@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 08:34:11 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/25 14:05:52 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/25 14:42:30 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		get_value(t_block *block)
 	page = NULL;
 	while (i <= 1)
 	{
-		psize = (i == 0) ? N : M;
+		psize = (i == 0) ? N * getpagesize() : M * getpagesize();
 		page = g_zone[i].page;
 		while (page)
 		{

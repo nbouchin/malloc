@@ -6,7 +6,7 @@
 /*   By: nbouchin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 10:45:22 by nbouchin          #+#    #+#             */
-/*   Updated: 2018/09/25 13:47:38 by nbouchin         ###   ########.fr       */
+/*   Updated: 2018/09/25 15:08:41 by nbouchin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ void	new_zone(size_t zone_size, int zone_type)
 	if (!g_zone[zone_type].page)
 	{
 		if (zone_type == 0)
-			g_zone[zone_type].page = new_page(N);
+			g_zone[zone_type].page = new_page(N * getpagesize());
 		else if (zone_type == 1)
-			g_zone[zone_type].page = new_page(M);
+			g_zone[zone_type].page = new_page(M * getpagesize());
 		else if (zone_type == 2)
 		{
 			zone_size += sizeof(t_block) + sizeof(t_page);
